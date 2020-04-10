@@ -1,0 +1,6 @@
+[submodule "Node-for-Max-samples"]
+	path = Node-for-Max-samples
+	url = https://github.com/naotokui/Node-for-Max-samples
+[submodule "spleeter"]
+	path = spleeter
+	url = https://github.com/deezer/spleeter
