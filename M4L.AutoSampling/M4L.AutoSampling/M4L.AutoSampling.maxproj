@@ -2,7 +2,7 @@
 	"name" : "M4L.AutoSampling",
 	"version" : 1,
 	"creationdate" : 3669374271,
-	"modificationdate" : 3669629022,
+	"modificationdate" : 3669661116,
 	"viewrect" : [ 25.0, 104.0, 300.0, 500.0 ],
 	"autoorganize" : 1,
 	"hideprojectwindow" : 0,
@@ -21,20 +21,15 @@
 		"code" : 		{
 			"index.js" : 			{
 				"kind" : "javascript",
-				"local" : 1,
-				"singleton" : 				{
-					"bootpath" : "~/git/M4L.AutoSampling/M4L.AutoSampling/src",
-					"projectrelativepath" : "./src"
-				}
-
+				"local" : 1
 			}
 ,
 			"audio_classification.js" : 			{
 				"kind" : "javascript",
 				"local" : 1,
 				"singleton" : 				{
-					"bootpath" : "~/git/x-remix/Node-for-Max-samples/AudioClassification_TFJS",
-					"projectrelativepath" : "../../x-remix/Node-for-Max-samples/AudioClassification_TFJS"
+					"bootpath" : "~/Documents/GitHub/x-remix/M4L.AutoSampling/M4L.AutoSampling/src",
+					"projectrelativepath" : "./src"
 				}
 
 			}
@@ -43,8 +38,8 @@
 				"kind" : "javascript",
 				"local" : 1,
 				"singleton" : 				{
-					"bootpath" : "~/git/x-remix/Node-for-Max-samples/AudioClassification_TFJS",
-					"projectrelativepath" : "../../x-remix/Node-for-Max-samples/AudioClassification_TFJS"
+					"bootpath" : "~/Documents/GitHub/x-remix/M4L.AutoSampling/M4L.AutoSampling/src",
+					"projectrelativepath" : "./src"
 				}
 
 			}
@@ -53,8 +48,8 @@
 				"kind" : "javascript",
 				"local" : 1,
 				"singleton" : 				{
-					"bootpath" : "~/git/x-remix/Node-for-Max-samples/AudioClassification_TFJS",
-					"projectrelativepath" : "../../x-remix/Node-for-Max-samples/AudioClassification_TFJS"
+					"bootpath" : "~/Documents/GitHub/x-remix/M4L.AutoSampling/M4L.AutoSampling/src",
+					"projectrelativepath" : "./src"
 				}
 
 			}
@@ -66,8 +61,81 @@
 				"kind" : "json",
 				"local" : 1,
 				"singleton" : 				{
-					"bootpath" : "~/git/M4L.AutoSampling/M4L.AutoSampling/models/drum_classification_128_augmented",
-					"projectrelativepath" : "./models/drum_classification_128_augmented"
+					"bootpath" : "~/Documents/GitHub/x-remix/M4L.AutoSampling/M4L.AutoSampling/src/models/drum_classification_128_augmented",
+					"projectrelativepath" : "./src/models/drum_classification_128_augmented"
+				}
+
+			}
+
+		}
+,
+		"other" : 		{
+			"group1-shard1of1" : 			{
+				"kind" : "file",
+				"local" : 1,
+				"singleton" : 				{
+					"bootpath" : "~/Documents/GitHub/x-remix/M4L.AutoSampling/M4L.AutoSampling/src/models/drum_classification_128_augmented",
+					"projectrelativepath" : "./src/models/drum_classification_128_augmented"
+				}
+
+			}
+,
+			"group2-shard1of1" : 			{
+				"kind" : "file",
+				"local" : 1,
+				"singleton" : 				{
+					"bootpath" : "~/Documents/GitHub/x-remix/M4L.AutoSampling/M4L.AutoSampling/src/models/drum_classification_128_augmented",
+					"projectrelativepath" : "./src/models/drum_classification_128_augmented"
+				}
+
+			}
+,
+			"group3-shard1of1" : 			{
+				"kind" : "file",
+				"local" : 1,
+				"singleton" : 				{
+					"bootpath" : "~/Documents/GitHub/x-remix/M4L.AutoSampling/M4L.AutoSampling/src/models/drum_classification_128_augmented",
+					"projectrelativepath" : "./src/models/drum_classification_128_augmented"
+				}
+
+			}
+,
+			"group4-shard1of1" : 			{
+				"kind" : "file",
+				"local" : 1,
+				"singleton" : 				{
+					"bootpath" : "~/Documents/GitHub/x-remix/M4L.AutoSampling/M4L.AutoSampling/src/models/drum_classification_128_augmented",
+					"projectrelativepath" : "./src/models/drum_classification_128_augmented"
+				}
+
+			}
+,
+			"group5-shard1of1" : 			{
+				"kind" : "file",
+				"local" : 1,
+				"singleton" : 				{
+					"bootpath" : "~/Documents/GitHub/x-remix/M4L.AutoSampling/M4L.AutoSampling/src/models/drum_classification_128_augmented",
+					"projectrelativepath" : "./src/models/drum_classification_128_augmented"
+				}
+
+			}
+,
+			"group6-shard1of1" : 			{
+				"kind" : "file",
+				"local" : 1,
+				"singleton" : 				{
+					"bootpath" : "~/Documents/GitHub/x-remix/M4L.AutoSampling/M4L.AutoSampling/src/models/drum_classification_128_augmented",
+					"projectrelativepath" : "./src/models/drum_classification_128_augmented"
+				}
+
+			}
+,
+			"group7-shard1of1" : 			{
+				"kind" : "file",
+				"local" : 1,
+				"singleton" : 				{
+					"bootpath" : "~/Documents/GitHub/x-remix/M4L.AutoSampling/M4L.AutoSampling/src/models/drum_classification_128_augmented",
+					"projectrelativepath" : "./src/models/drum_classification_128_augmented"
 				}
 
 			}
@@ -82,16 +150,7 @@
 ,
 	"searchpath" : 	{
 		"0" : 		{
-			"bootpath" : "~/git/M4L.AutoSampling/M4L.AutoSampling/src",
-			"projectrelativepath" : "./src",
-			"label" : "src",
-			"recursive" : 1,
-			"enabled" : 1,
-			"includeincollective" : 1
-		}
-,
-		"1" : 		{
-			"bootpath" : "~/git/M4L.AutoSampling/M4L.AutoSampling/node_modules",
+			"bootpath" : "~/Documents/GitHub/x-remix/M4L.AutoSampling/M4L.AutoSampling/node_modules",
 			"projectrelativepath" : "./node_modules",
 			"label" : "node modules",
 			"recursive" : 1,
@@ -99,10 +158,10 @@
 			"includeincollective" : 1
 		}
 ,
-		"2" : 		{
-			"bootpath" : "~/git/M4L.AutoSampling/M4L.AutoSampling/maxpatch",
-			"projectrelativepath" : "./maxpatch",
-			"label" : "subpatch",
+		"1" : 		{
+			"bootpath" : "~/Documents/GitHub/x-remix/M4L.AutoSampling/M4L.AutoSampling/src",
+			"projectrelativepath" : "./src",
+			"label" : "src",
 			"recursive" : 1,
 			"enabled" : 1,
 			"includeincollective" : 1

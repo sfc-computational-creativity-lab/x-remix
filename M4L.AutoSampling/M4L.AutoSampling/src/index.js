@@ -40,15 +40,18 @@ const DRUM_CLASSES = [
 
 // Global Variables
 var buffer_;
+var onsets_;
 
 // This will be printed directly to the Max console
 Max.post(`Loaded the ${path.basename(__filename)} script`);
 
 // Segmentation
 Max.addHandler("segments", (filepath) => {
-    var onsets = segmentation(filepath);
-    console.log(onsets);
-    Max.outlet("segments", onsets);
+    segmentation(filepath).then((onsets) => {
+        console.log(onsets);
+        onsets_ = onsets;
+        Max.outlet("segments", onsets);
+    });
 });
 
 async function segmentation(filepath){
@@ -64,13 +67,13 @@ async function segmentation(filepath){
 
 // Find a segment containing the given position
 Max.addHandler("find_segment", (position) => {
-    if (typeof onsets === "undefined") {
+    if (typeof onsets_ === "undefined") {
         Max.post("no segmentation data found");
         return;
     } else {
-        for (let i = 0; i < onsets.length - 1; i++) {
-            if (onsets[i] < position && position <= onsets[i + 1]) {
-                Max.outlet("find_segment", onsets[i], onsets[i + 1]);
+        for (let i = 0; i < onsets_.length - 1; i++) {
+            if (onsets_[i] < position && position <= onsets_[i + 1]) {
+                Max.outlet("find_segment", onsets_[i], onsets_[i + 1]);
                 break;
             }
         }
@@ -145,6 +148,8 @@ Max.addHandler("create", (filepath) => {
     var onsets = segmentation(filepath);
     Max.outlet("segments", onsets);
     console.log(onsets);
+
+
 
     var resampled = createBuffer(buffer_, {rate:22100}) // resample for spectrogram
     var matrix = [];
