@@ -47,23 +47,15 @@ Max.post(`Loaded the ${path.basename(__filename)} script`);
 
 // Segmentation
 Max.addHandler("segments", (filepath) => {
-    segmentation(filepath).then((onsets) => {
-        console.log(onsets);
-        onsets_ = onsets;
-        Max.outlet("segments", onsets);
-    });
-});
-
-async function segmentation(filepath){
-    // load file and process
     load(filepath).then(function (buffer) {
         var onsets = onset.getOnsets(buffer, SEGMENT_MIN_LENGTH);
-        buffer_ = buffer;
-        return onsets;
+        buffer_ = buffer;        
+        onsets_ = onsets;
+        Max.outlet("segments", onsets);
     }).catch(function (err) {
         Max.post(err);
     });
-}
+});
 
 // Find a segment containing the given position
 Max.addHandler("find_segment", (position) => {

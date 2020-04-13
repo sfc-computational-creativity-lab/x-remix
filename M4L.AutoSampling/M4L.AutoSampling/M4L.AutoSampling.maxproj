@@ -2,7 +2,7 @@
 	"name" : "M4L.AutoSampling",
 	"version" : 1,
 	"creationdate" : 3669374271,
-	"modificationdate" : 3669661116,
+	"modificationdate" : 3669661188,
 	"viewrect" : [ 25.0, 104.0, 300.0, 500.0 ],
 	"autoorganize" : 1,
 	"hideprojectwindow" : 0,
@@ -19,9 +19,14 @@
 		}
 ,
 		"code" : 		{
-			"index.js" : 			{
+			"autosample.js" : 			{
 				"kind" : "javascript",
-				"local" : 1
+				"local" : 1,
+				"singleton" : 				{
+					"bootpath" : "~/Documents/GitHub/x-remix/M4L.AutoSampling/M4L.AutoSampling/src",
+					"projectrelativepath" : "./src"
+				}
+
 			}
 ,
 			"audio_classification.js" : 			{

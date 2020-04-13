@@ -4,13 +4,13 @@
 		"appversion" : 		{
 			"major" : 8,
 			"minor" : 1,
-			"revision" : 2,
+			"revision" : 3,
 			"architecture" : "x64",
 			"modernui" : 1
 		}
 ,
 		"classnamespace" : "box",
-		"rect" : [ 36.0, 100.0, 972.0, 921.0 ],
+		"rect" : [ 285.0, 139.0, 972.0, 982.0 ],
 		"bglocked" : 0,
 		"openinpresentation" : 1,
 		"default_fontsize" : 12.0,
@@ -39,6 +39,29 @@
 		"subpatcher_template" : "",
 		"boxes" : [ 			{
 				"box" : 				{
+					"id" : "obj-20",
+					"maxclass" : "message",
+					"numinlets" : 2,
+					"numoutlets" : 1,
+					"outlettype" : [ "" ],
+					"patching_rect" : [ 116.0, 648.0, 50.0, 22.0 ]
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-23",
+					"maxclass" : "message",
+					"numinlets" : 2,
+					"numoutlets" : 1,
+					"outlettype" : [ "" ],
+					"patching_rect" : [ 39.5, 556.67437744140625, 63.0, 22.0 ],
+					"text" : "script stop"
+				}
+
+			}
+, 			{
+				"box" : 				{
 					"id" : "obj-21",
 					"maxclass" : "gswitch",
 					"numinlets" : 3,
@@ -64,13 +87,13 @@
 , 			{
 				"box" : 				{
 					"id" : "obj-15",
-					"linecount" : 7,
+					"linecount" : 5,
 					"maxclass" : "message",
 					"numinlets" : 2,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 68.0, 302.0, 50.0, 102.0 ],
-					"text" : "/Users/nao/git/GrooVAE_Drum/tmp/drumloop.wav"
+					"patching_rect" : [ 68.0, 302.0, 50.0, 76.0 ],
+					"text" : "/Users/nao/Desktop/drum.wav"
 				}
 
 			}
@@ -143,7 +166,7 @@
 						"appversion" : 						{
 							"major" : 8,
 							"minor" : 1,
-							"revision" : 2,
+							"revision" : 3,
 							"architecture" : "x64",
 							"modernui" : 1
 						}
@@ -482,7 +505,7 @@
 						"appversion" : 						{
 							"major" : 8,
 							"minor" : 1,
-							"revision" : 2,
+							"revision" : 3,
 							"architecture" : "x64",
 							"modernui" : 1
 						}
@@ -831,13 +854,13 @@
 					"presentation_rect" : [ 288.162872314453125, 116.0, 133.0, 41.0 ],
 					"saved_attribute_attributes" : 					{
 						"valueof" : 						{
+							"parameter_shortname" : "gain",
 							"parameter_type" : 0,
 							"parameter_unitstyle" : 4,
 							"parameter_mmin" : -70.0,
 							"parameter_longname" : "gain",
 							"parameter_mmax" : 6.0,
-							"parameter_initial" : [ 0 ],
-							"parameter_shortname" : "gain"
+							"parameter_initial" : [ 0 ]
 						}
 
 					}
@@ -1056,16 +1079,14 @@
 					"numinlets" : 1,
 					"numoutlets" : 2,
 					"outlettype" : [ "", "" ],
-					"patching_rect" : [ 170.0, 577.093017578125, 326.2452392578125, 22.0 ],
+					"patching_rect" : [ 170.0, 577.093017578125, 274.0, 22.0 ],
 					"saved_object_attributes" : 					{
 						"autostart" : 1,
 						"defer" : 0,
-						"node_bin_path" : "",
-						"npm_bin_path" : "",
 						"watch" : 1
 					}
 ,
-					"text" : "node.script index.js @watch 1 @autostart 1"
+					"text" : "node.script autosample.js @watch 1 @autostart 1"
 				}
 
 			}
@@ -1172,6 +1193,14 @@
 			}
 , 			{
 				"patchline" : 				{
+					"destination" : [ "obj-20", 1 ],
+					"order" : 2,
+					"source" : [ "obj-2", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
 					"destination" : [ "obj-91", 0 ],
 					"order" : 0,
 					"source" : [ "obj-2", 0 ]
@@ -1197,6 +1226,13 @@
 				"patchline" : 				{
 					"destination" : [ "obj-52", 0 ],
 					"source" : [ "obj-22", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-2", 0 ],
+					"source" : [ "obj-23", 0 ]
 				}
 
 			}
@@ -1378,8 +1414,8 @@
 		}
 ,
 		"dependency_cache" : [ 			{
-				"name" : "index.js",
-				"bootpath" : "~/git/x-remix/M4L.AutoSampling/M4L.AutoSampling/src",
+				"name" : "autosample.js",
+				"bootpath" : "~/Documents/GitHub/x-remix/M4L.AutoSampling/M4L.AutoSampling/src",
 				"patcherrelativepath" : "./src",
 				"type" : "TEXT",
 				"implicit" : 1
