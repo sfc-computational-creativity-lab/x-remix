@@ -3,6 +3,7 @@ const Max = require('max-api');
 
 const onset = require('./onset.js');
 const classify = require('./audio_classification.js');
+var munkres = require('munkres-js');
 
 var load = require('audio-loader');
 var createBuffer = require('audio-buffer-from');
@@ -45,15 +46,21 @@ Max.post(`Loaded the ${path.basename(__filename)} script`);
 
 // Segmentation
 Max.addHandler("segments", (filepath) => {
+    var onsets = segmentation(filepath);
+    console.log(onsets);
+    Max.outlet("segments", onsets);
+});
+
+async function segmentation(filepath){
     // load file and process
     load(filepath).then(function (buffer) {
-        onsets = onset.getOnsets(buffer, SEGMENT_MIN_LENGTH);
+        var onsets = onset.getOnsets(buffer, SEGMENT_MIN_LENGTH);
         buffer_ = buffer;
-        Max.outlet("segments", onsets);
+        return onsets;
     }).catch(function (err) {
         Max.post(err);
     });
-});
+}
 
 // Find a segment containing the given position
 Max.addHandler("find_segment", (position) => {
@@ -132,3 +139,34 @@ function classifyAudioSegment(buffer, startMS, endMS, fftSize = 1024, hopSize = 
 function argMax(array) {
     return array.map((x, i) => [x, i]).reduce((r, a) => (a[0] > r[0] ? a : r))[1];
 }
+
+// Crete drum set
+Max.addHandler("create", (filepath) => {
+    var onsets = segmentation(filepath);
+    Max.outlet("segments", onsets);
+    console.log(onsets);
+
+    var resampled = createBuffer(buffer_, {rate:22100}) // resample for spectrogram
+    var matrix = [];
+    for (var i = 0; i < onsets.length - 1; i++){
+        var start   = onsets[ i ];
+        var end     = onsets[ i+1 ]
+
+        var prediction = classifyAudioSegment(resampled, start, end);
+
+        // For Hangarian Assignment Algorithm, We need a cost matrix
+        var costs = [];
+        for (var j=0; j < prediction.length; j++){
+            costs.push(prediction[j] * -1.0)
+        }
+        matrix.push(costs);
+    }
+
+    Max.post("onsets", onsets);
+    Max.post("matrix", matrix);
+    
+    // Assignments
+    var assignments = munkres(matrix);
+    Max.post(assignments);
+    // Max.outlet("classify", prediction);
+});
