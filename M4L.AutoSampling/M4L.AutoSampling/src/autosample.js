@@ -138,14 +138,11 @@ function argMax(array) {
 // Crete drum set
 Max.addHandler("sample", (filepath) => {
 
-    console.log(filepath);
-
     // segmentation
     load(filepath).then((buffer) => {
         var onsets = onset.getOnsets(buffer, SEGMENT_MIN_LENGTH);
         buffer_ = buffer;        
         onsets_ = onsets;
-        console.log(onsets);
         return [onsets, buffer];
     })
     // classification
@@ -178,14 +175,12 @@ Max.addHandler("sample", (filepath) => {
         assignments.sort(function(a, b) {
             return a[1] - b[1];
         });
-        Max.post(assignments);
-        
+
         // output
         for (var i = 0; i < assignments.length; i++){
             var assign      = assignments[i];
             var drumid      = assign[1];
             var segmentid   = assign[0];
-            Max.post("sample", drumid, onsets[segmentid], onsets[segmentid + 1]);
             Max.outlet("sample", drumid, onsets[segmentid], onsets[segmentid + 1]);
         }
     })
