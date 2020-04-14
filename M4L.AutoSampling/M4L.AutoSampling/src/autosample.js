@@ -136,34 +136,66 @@ function argMax(array) {
 }
 
 // Crete drum set
-Max.addHandler("create", (filepath) => {
-    var onsets = segmentation(filepath);
-    Max.outlet("segments", onsets);
-    console.log(onsets);
+Max.addHandler("sample", (filepath) => {
 
+    console.log(filepath);
 
+    // segmentation
+    load(filepath).then((buffer) => {
+        var onsets = onset.getOnsets(buffer, SEGMENT_MIN_LENGTH);
+        buffer_ = buffer;        
+        onsets_ = onsets;
+        console.log(onsets);
+        return [onsets, buffer];
+    })
+    // classification
+    .then(([onsets, buffer]) => {
+        // resample for spectrogram
+        var resampled = createBuffer(buffer, {rate:22100}) 
+ 
+        // classify each segment
+        var matrix = [];
+        for (var i = 0; i < onsets.length - 1; i++){
+            var start   = onsets[ i ];
+            var end     = onsets[ i+1 ]
+            var prediction = classifyAudioSegment(resampled, start, end);
 
-    var resampled = createBuffer(buffer_, {rate:22100}) // resample for spectrogram
-    var matrix = [];
-    for (var i = 0; i < onsets.length - 1; i++){
-        var start   = onsets[ i ];
-        var end     = onsets[ i+1 ]
-
-        var prediction = classifyAudioSegment(resampled, start, end);
-
-        // For Hangarian Assignment Algorithm, We need a cost matrix
-        var costs = [];
-        for (var j=0; j < prediction.length; j++){
-            costs.push(prediction[j] * -1.0)
+            // For Hangarian Assignment Algorithm, We need a cost matrix
+            var costs = [];
+            for (var j=0; j < prediction.length; j++){
+                costs.push(prediction[j] * -1.0)
+            }
+            matrix.push(costs);
         }
-        matrix.push(costs);
-    }
 
-    Max.post("onsets", onsets);
-    Max.post("matrix", matrix);
-    
+        // linear assignment problem
+        var assignments = munkres(matrix);
+        return [onsets, assignments];
+    })
+    // output
+    .then(([onsets, assignments]) => {
+        // sort
+        assignments.sort(function(a, b) {
+            return a[1] - b[1];
+        });
+        Max.post(assignments);
+        
+        // output
+        for (var i = 0; i < assignments.length; i++){
+            var assign      = assignments[i];
+            var drumid      = assign[1];
+            var segmentid   = assign[0];
+            Max.post("sample", drumid, onsets[segmentid], onsets[segmentid + 1]);
+            Max.outlet("sample", drumid, onsets[segmentid], onsets[segmentid + 1]);
+        }
+    })
+    // error handling
+    .catch(function (err) {
+        Max.post(err);
+    });
+
     // Assignments
-    var assignments = munkres(matrix);
-    Max.post(assignments);
+    // var assignments = munkres(matrix);
+    // Max.post(assignments);
     // Max.outlet("classify", prediction);
 });
