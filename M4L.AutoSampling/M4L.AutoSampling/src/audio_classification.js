@@ -2,6 +2,8 @@ const context = require('audio-context')()
 const dsp = require('./dsp.js');
 // const p5 = require('p5');
 
+const Max = require('max-api');
+
 const MIN_DB = -80.0;
 exports.MIN_DB = MIN_DB;
 
@@ -68,9 +70,10 @@ function createSpectrogram(buffer, startMS, endMS, fftSize = 1024, hopSize = 256
        db_spectrogram.push(decibels);
        currentOffset += hopSize;
     }
+    Max.post(maxdb);
     for (let i=0; i < db_spectrogram.length; i++){
        for (let j = 0; j < melCount; j++){
-          db_spectrogram[i][j]  -= maxdb;
+         db_spectrogram[i][j]  -= maxdb;
        }
     }
  

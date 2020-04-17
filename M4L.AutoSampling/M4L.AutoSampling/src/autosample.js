@@ -3,7 +3,7 @@ const Max = require('max-api');
 
 const onset = require('./onset.js');
 const classify = require('./audio_classification.js');
-var munkres = require('munkres-js');
+var munkres = require('munkres-js'); //https://github.com/addaleax/munkres-js
 
 var load = require('audio-loader');
 var createBuffer = require('audio-buffer-from');
@@ -65,6 +65,7 @@ Max.addHandler("find_segment", (position) => {
     } else {
         for (let i = 0; i < onsets_.length - 1; i++) {
             if (onsets_[i] < position && position <= onsets_[i + 1]) {
+                Max.post("segment", i);
                 Max.outlet("find_segment", onsets_[i], onsets_[i + 1]);
                 break;
             }
@@ -160,28 +161,33 @@ Max.addHandler("sample", (filepath) => {
             // For Hangarian Assignment Algorithm, We need a cost matrix
             var costs = [];
             for (var j=0; j < prediction.length; j++){
-                costs.push(prediction[j] * -1.0)
+                costs.push(1.0 - prediction[j])
             }
             matrix.push(costs);
         }
 
+        Max.post(matrix);
+
         // linear assignment problem
         var assignments = munkres(matrix);
+
+        Max.post(assignments);
+
         return [onsets, assignments];
     })
     // output
     .then(([onsets, assignments]) => {
         // sort
-        assignments.sort(function(a, b) {
-            return a[1] - b[1];
-        });
+        // assignments.sort(function(a, b) {
+        //     return a[1] - b[1];
+        // });
 
         // output
         for (var i = 0; i < assignments.length; i++){
             var assign      = assignments[i];
             var drumid      = assign[1];
             var segmentid   = assign[0];
-            Max.outlet("sample", drumid, onsets[segmentid], onsets[segmentid + 1]);
+            Max.outlet("sample", drumid + 1, onsets[segmentid], onsets[segmentid + 1], segmentid);
         }
     })
     // error handling
