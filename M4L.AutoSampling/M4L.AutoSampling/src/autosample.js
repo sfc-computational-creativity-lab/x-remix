@@ -13,15 +13,19 @@ require('@tensorflow/tfjs-node');
 // Constants
 const SEGMENT_MIN_LENGTH = 150; // Minimum length of an audio segment
 
+const INPUT_SPEC_LENGTH = 128;
+
 // keras-based model to classify drum kit sound based on its spectrogram.
 // python script: https://gist.github.com/naotokui/a2b331dd206b13a70800e862cfe7da3c
-const modelpath = "file://./models/drum_classification_128_augmented/model.json";
+// const modelpath = "file://./models/drum_classification_128_augmented/model.json"; // snare + kickみたいな音も使ってた
+const modelpath = "file://./models/drum_spec_model_128_aug_level/model.json";
 
 // Load tensorflow.js model from the path
 async function loadPretrainedModel() {
     tfmodel = await tf.loadModel(modelpath);
     isModelLoaded = true;
     console.log("model loaded");
+    tfmodel.summary();
 }
 loadPretrainedModel();
 
@@ -65,7 +69,7 @@ Max.addHandler("find_segment", (position) => {
     } else {
         for (let i = 0; i < onsets_.length - 1; i++) {
             if (onsets_[i] < position && position <= onsets_[i + 1]) {
-                Max.post("segment", i);
+                Max.post("segment", i, onsets_[i], onsets_[i + 1]);
                 Max.outlet("find_segment", onsets_[i], onsets_[i + 1]);
                 break;
             }
@@ -85,7 +89,7 @@ Max.addHandler("classify", (startMS, endMS) => {
 });
 
 // Classification with TensorFlow
-function classifyAudioSegment(buffer, startMS, endMS, fftSize = 1024, hopSize = 256, melCount = 128, specLength = 32) {
+function classifyAudioSegment(buffer, startMS, endMS, fftSize = 1024, hopSize = 256, melCount = 128, specLength = INPUT_SPEC_LENGTH) {
     if (typeof isModelLoaded === "undefined" || !isModelLoaded) {
         Max.post("Error: TF Model is not loaded.");
         return;
@@ -116,7 +120,7 @@ function classifyAudioSegment(buffer, startMS, endMS, fftSize = 1024, hopSize = 
     // Reshape for prediction
     input_tensor = tfbuffer.toTensor(); // tf.buffer -> tf.tensor
     input_tensor = tf.reshape(input_tensor, [1, input_tensor.shape[0], input_tensor.shape[1], 1]); // [1, 128, 32, 1]
-    
+        
     // Prediction!
     try {
         let predictions = tfmodel.predict(input_tensor);
@@ -127,6 +131,7 @@ function classifyAudioSegment(buffer, startMS, endMS, fftSize = 1024, hopSize = 
         }
         return predictions_;
     } catch (err) {
+        Max.error(err);
         console.error(err);
     }
 }
@@ -166,12 +171,24 @@ Max.addHandler("sample", (filepath) => {
             matrix.push(costs);
         }
 
-        Max.post(matrix);
-
-        // linear assignment problem
-        var assignments = munkres(matrix);
+        // simple assignment
+        var assignments = [];
+        for (var j = 0; j < DRUM_CLASSES.length; j++){
+            var costs = [];
+            for (var i = 0; i < onsets.length - 1; i++){
+                costs.push(1.0 - matrix[i][j]);
+            }
+            Max.post(costs);
+            var segmentid = costs.indexOf(Math.max(...costs));
+            assignments.push([segmentid, j]);
+        }
 
         Max.post(assignments);
+        // Max.post(matrix);
+
+        // linear assignment problem
+        // var assignments = munkres(matrix);
+        // Max.post(assignments);
 
         return [onsets, assignments];
     })
