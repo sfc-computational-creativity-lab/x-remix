@@ -10,7 +10,7 @@
 		}
 ,
 		"classnamespace" : "box",
-		"rect" : [ 34.0, 79.0, 1794.0, 967.0 ],
+		"rect" : [ 220.0, 180.0, 1544.0, 967.0 ],
 		"bglocked" : 0,
 		"openinpresentation" : 1,
 		"default_fontsize" : 12.0,
@@ -38,6 +38,17 @@
 		"style" : "",
 		"subpatcher_template" : "",
 		"boxes" : [ 			{
+				"box" : 				{
+					"id" : "obj-67",
+					"maxclass" : "message",
+					"numinlets" : 2,
+					"numoutlets" : 1,
+					"outlettype" : [ "" ],
+					"patching_rect" : [ 83.0, 230.0, 50.0, 22.0 ]
+				}
+
+			}
+, 			{
 				"box" : 				{
 					"id" : "obj-152",
 					"maxclass" : "message",
@@ -444,11 +455,11 @@
 					"patching_rect" : [ 1206.071414809629005, 648.0, 58.7452392578125, 61.1395263671875 ],
 					"saved_attribute_attributes" : 					{
 						"valueof" : 						{
+							"parameter_longname" : "live.button[16]",
+							"parameter_mmax" : 1,
 							"parameter_shortname" : "live.button[16]",
 							"parameter_enum" : [ "off", "on" ],
-							"parameter_type" : 2,
-							"parameter_longname" : "live.button[16]",
-							"parameter_mmax" : 1
+							"parameter_type" : 2
 						}
 
 					}
@@ -504,11 +515,11 @@
 					"patching_rect" : [ 952.0, 483.5, 15.0, 15.0 ],
 					"saved_attribute_attributes" : 					{
 						"valueof" : 						{
+							"parameter_longname" : "live.button",
+							"parameter_mmax" : 1,
 							"parameter_shortname" : "live.button",
 							"parameter_enum" : [ "off", "on" ],
-							"parameter_type" : 2,
-							"parameter_longname" : "live.button",
-							"parameter_mmax" : 1
+							"parameter_type" : 2
 						}
 
 					}
@@ -665,11 +676,11 @@
 					"presentation_rect" : [ 584.969879518072275, 28.93023681640625, 15.0, 15.0 ],
 					"saved_attribute_attributes" : 					{
 						"valueof" : 						{
+							"parameter_longname" : "live.button[14]",
+							"parameter_mmax" : 1,
 							"parameter_shortname" : "live.button[1]",
 							"parameter_enum" : [ "off", "on" ],
-							"parameter_type" : 2,
-							"parameter_longname" : "live.button[14]",
-							"parameter_mmax" : 1
+							"parameter_type" : 2
 						}
 
 					}
@@ -691,11 +702,11 @@
 					"presentation_rect" : [ 675.319277108433653, 28.93023681640625, 15.0, 15.0 ],
 					"saved_attribute_attributes" : 					{
 						"valueof" : 						{
+							"parameter_longname" : "live.button[13]",
+							"parameter_mmax" : 1,
 							"parameter_shortname" : "live.button[1]",
 							"parameter_enum" : [ "off", "on" ],
-							"parameter_type" : 2,
-							"parameter_longname" : "live.button[13]",
-							"parameter_mmax" : 1
+							"parameter_type" : 2
 						}
 
 					}
@@ -717,11 +728,11 @@
 					"presentation_rect" : [ 494.379518072289102, 28.93023681640625, 15.0, 15.0 ],
 					"saved_attribute_attributes" : 					{
 						"valueof" : 						{
+							"parameter_longname" : "live.button[15]",
+							"parameter_mmax" : 1,
 							"parameter_shortname" : "live.button[1]",
 							"parameter_enum" : [ "off", "on" ],
-							"parameter_type" : 2,
-							"parameter_longname" : "live.button[15]",
-							"parameter_mmax" : 1
+							"parameter_type" : 2
 						}
 
 					}
@@ -743,11 +754,11 @@
 					"presentation_rect" : [ 583.210843373494072, 72.5, 15.0, 15.0 ],
 					"saved_attribute_attributes" : 					{
 						"valueof" : 						{
+							"parameter_longname" : "live.button[11]",
+							"parameter_mmax" : 1,
 							"parameter_shortname" : "live.button[1]",
 							"parameter_enum" : [ "off", "on" ],
-							"parameter_type" : 2,
-							"parameter_longname" : "live.button[11]",
-							"parameter_mmax" : 1
+							"parameter_type" : 2
 						}
 
 					}
@@ -769,11 +780,11 @@
 					"presentation_rect" : [ 673.560240963855449, 72.5, 15.0, 15.0 ],
 					"saved_attribute_attributes" : 					{
 						"valueof" : 						{
+							"parameter_longname" : "live.button[12]",
+							"parameter_mmax" : 1,
 							"parameter_shortname" : "live.button[1]",
 							"parameter_enum" : [ "off", "on" ],
-							"parameter_type" : 2,
-							"parameter_longname" : "live.button[12]",
-							"parameter_mmax" : 1
+							"parameter_type" : 2
 						}
 
 					}
@@ -795,11 +806,11 @@
 					"presentation_rect" : [ 492.620481927710841, 72.5, 15.0, 15.0 ],
 					"saved_attribute_attributes" : 					{
 						"valueof" : 						{
+							"parameter_longname" : "live.button[10]",
+							"parameter_mmax" : 1,
 							"parameter_shortname" : "live.button[1]",
 							"parameter_enum" : [ "off", "on" ],
-							"parameter_type" : 2,
-							"parameter_longname" : "live.button[10]",
-							"parameter_mmax" : 1
+							"parameter_type" : 2
 						}
 
 					}
@@ -821,11 +832,11 @@
 					"presentation_rect" : [ 584.969879518072275, 121.0, 15.0, 15.0 ],
 					"saved_attribute_attributes" : 					{
 						"valueof" : 						{
+							"parameter_longname" : "live.button[7]",
+							"parameter_mmax" : 1,
 							"parameter_shortname" : "live.button[1]",
 							"parameter_enum" : [ "off", "on" ],
-							"parameter_type" : 2,
-							"parameter_longname" : "live.button[7]",
-							"parameter_mmax" : 1
+							"parameter_type" : 2
 						}
 
 					}
@@ -847,11 +858,11 @@
 					"presentation_rect" : [ 675.319277108433653, 121.0, 15.0, 15.0 ],
 					"saved_attribute_attributes" : 					{
 						"valueof" : 						{
+							"parameter_longname" : "live.button[9]",
+							"parameter_mmax" : 1,
 							"parameter_shortname" : "live.button[1]",
 							"parameter_enum" : [ "off", "on" ],
-							"parameter_type" : 2,
-							"parameter_longname" : "live.button[9]",
-							"parameter_mmax" : 1
+							"parameter_type" : 2
 						}
 
 					}
@@ -873,11 +884,11 @@
 					"presentation_rect" : [ 494.379518072289102, 121.0, 15.0, 15.0 ],
 					"saved_attribute_attributes" : 					{
 						"valueof" : 						{
+							"parameter_longname" : "live.button[1]",
+							"parameter_mmax" : 1,
 							"parameter_shortname" : "live.button[1]",
 							"parameter_enum" : [ "off", "on" ],
-							"parameter_type" : 2,
-							"parameter_longname" : "live.button[1]",
-							"parameter_mmax" : 1
+							"parameter_type" : 2
 						}
 
 					}
@@ -2393,13 +2404,13 @@
 					"presentation_rect" : [ 288.162872314453125, 116.0, 133.0, 41.0 ],
 					"saved_attribute_attributes" : 					{
 						"valueof" : 						{
+							"parameter_longname" : "gain",
+							"parameter_mmax" : 6.0,
+							"parameter_initial" : [ 0 ],
 							"parameter_shortname" : "gain",
 							"parameter_type" : 0,
 							"parameter_unitstyle" : 4,
-							"parameter_mmin" : -70.0,
-							"parameter_longname" : "gain",
-							"parameter_mmax" : 6.0,
-							"parameter_initial" : [ 0 ]
+							"parameter_mmin" : -70.0
 						}
 
 					}
@@ -2525,8 +2536,8 @@
 					"numinlets" : 1,
 					"numoutlets" : 2,
 					"outlettype" : [ "float", "bang" ],
-					"patching_rect" : [ 284.399993896484375, 345.0, 147.0, 22.0 ],
-					"text" : "buffer~ ---buf1 @sr 48000"
+					"patching_rect" : [ 284.399993896484375, 345.0, 85.0, 22.0 ],
+					"text" : "buffer~ ---buf1"
 				}
 
 			}
@@ -2622,8 +2633,6 @@
 					"saved_object_attributes" : 					{
 						"autostart" : 1,
 						"defer" : 0,
-						"node_bin_path" : "",
-						"npm_bin_path" : "",
 						"watch" : 0
 					}
 ,
@@ -2648,6 +2657,14 @@
 				"patchline" : 				{
 					"destination" : [ "obj-17", 0 ],
 					"order" : 0,
+					"source" : [ "obj-1", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-67", 1 ],
+					"order" : 2,
 					"source" : [ "obj-1", 0 ]
 				}
 
@@ -3157,6 +3174,13 @@
 			}
 , 			{
 				"patchline" : 				{
+					"destination" : [ "obj-7", 0 ],
+					"source" : [ "obj-67", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
 					"destination" : [ "obj-94", 1 ],
 					"source" : [ "obj-68", 0 ]
 				}
@@ -3393,93 +3417,125 @@
 			}
  ],
 		"parameters" : 		{
-			"obj-90.1::obj-25" : [ "live.gain~[21]", "live.gain~", 0 ],
-			"obj-90.3::obj-25" : [ "live.gain~[23]", "live.gain~", 0 ],
-			"obj-108" : [ "live.button[11]", "live.button[1]", 0 ],
+			"obj-60.2::obj-25" : [ "live.gain~[35]", "live.gain~", 0 ],
+			"obj-115" : [ "live.button[16]", "live.button[16]", 0 ],
 			"obj-76.3::obj-25" : [ "live.gain~[31]", "live.gain~", 0 ],
-			"obj-98.3::obj-25" : [ "live.gain~[11]", "live.gain~", 0 ],
-			"obj-87.4::obj-25" : [ "live.gain~[18]", "live.gain~", 0 ],
-			"obj-81.3::obj-25" : [ "live.gain~[15]", "live.gain~", 0 ],
-			"obj-98.4::obj-25" : [ "live.gain~[10]", "live.gain~", 0 ],
-			"obj-112" : [ "live.button[13]", "live.button[1]", 0 ],
-			"obj-96.3::obj-25" : [ "live.gain~[7]", "live.gain~", 0 ],
-			"obj-76.2::obj-25" : [ "live.gain~[32]", "live.gain~", 0 ],
-			"obj-96.2::obj-25" : [ "live.gain~[8]", "live.gain~", 0 ],
-			"obj-60.1::obj-25" : [ "live.gain~", "live.gain~", 0 ],
-			"obj-87.3::obj-25" : [ "live.gain~[19]", "live.gain~", 0 ],
+			"obj-79.4::obj-25" : [ "live.gain~[26]", "live.gain~", 0 ],
+			"obj-96.1::obj-25" : [ "live.gain~[5]", "live.gain~", 0 ],
+			"obj-87.1::obj-25" : [ "live.gain~[17]", "live.gain~", 0 ],
+			"obj-94.2::obj-25" : [ "live.gain~[4]", "live.gain~", 0 ],
 			"obj-81.2::obj-25" : [ "live.gain~[16]", "live.gain~", 0 ],
 			"obj-52" : [ "gain", "gain", 0 ],
-			"obj-79.3::obj-25" : [ "live.gain~[27]", "live.gain~", 0 ],
-			"obj-94.2::obj-25" : [ "live.gain~[4]", "live.gain~", 0 ],
 			"obj-106" : [ "live.button[7]", "live.button[1]", 0 ],
-			"obj-60.2::obj-25" : [ "live.gain~[35]", "live.gain~", 0 ],
-			"obj-79.2::obj-25" : [ "live.gain~[28]", "live.gain~", 0 ],
-			"obj-96.1::obj-25" : [ "live.gain~[5]", "live.gain~", 0 ],
-			"obj-79.1::obj-25" : [ "live.gain~[25]", "live.gain~", 0 ],
-			"obj-76.4::obj-25" : [ "live.gain~[30]", "live.gain~", 0 ],
-			"obj-110" : [ "live.button[10]", "live.button[1]", 0 ],
-			"obj-81.4::obj-25" : [ "live.gain~[14]", "live.gain~", 0 ],
-			"obj-115" : [ "live.button[16]", "live.button[16]", 0 ],
-			"obj-104" : [ "live.button[1]", "live.button[1]", 0 ],
-			"obj-79.4::obj-25" : [ "live.gain~[26]", "live.gain~", 0 ],
-			"obj-60.3::obj-25" : [ "live.gain~[34]", "live.gain~", 0 ],
-			"obj-94.4::obj-25" : [ "live.gain~[2]", "live.gain~", 0 ],
-			"obj-105" : [ "live.button[9]", "live.button[1]", 0 ],
-			"obj-111" : [ "live.button[14]", "live.button[1]", 0 ],
-			"obj-90.2::obj-25" : [ "live.gain~[24]", "live.gain~", 0 ],
-			"obj-98.1::obj-25" : [ "live.gain~[9]", "live.gain~", 0 ],
-			"obj-94.3::obj-25" : [ "live.gain~[3]", "live.gain~", 0 ],
-			"obj-109" : [ "live.button[12]", "live.button[1]", 0 ],
-			"obj-90.4::obj-25" : [ "live.gain~[22]", "live.gain~", 0 ],
-			"obj-87.2::obj-25" : [ "live.gain~[20]", "live.gain~", 0 ],
-			"obj-60.4::obj-25" : [ "live.gain~[33]", "live.gain~", 0 ],
 			"obj-76.1::obj-25" : [ "live.gain~[29]", "live.gain~", 0 ],
-			"obj-87.1::obj-25" : [ "live.gain~[17]", "live.gain~", 0 ],
+			"obj-79.2::obj-25" : [ "live.gain~[28]", "live.gain~", 0 ],
+			"obj-98.3::obj-25" : [ "live.gain~[11]", "live.gain~", 0 ],
+			"obj-90.3::obj-25" : [ "live.gain~[23]", "live.gain~", 0 ],
+			"obj-127" : [ "live.button", "live.button", 0 ],
+			"obj-96.4::obj-25" : [ "live.gain~[6]", "live.gain~", 0 ],
+			"obj-87.4::obj-25" : [ "live.gain~[18]", "live.gain~", 0 ],
+			"obj-98.1::obj-25" : [ "live.gain~[9]", "live.gain~", 0 ],
+			"obj-104" : [ "live.button[1]", "live.button[1]", 0 ],
+			"obj-60.3::obj-25" : [ "live.gain~[34]", "live.gain~", 0 ],
+			"obj-76.4::obj-25" : [ "live.gain~[30]", "live.gain~", 0 ],
+			"obj-90.1::obj-25" : [ "live.gain~[21]", "live.gain~", 0 ],
+			"obj-96.2::obj-25" : [ "live.gain~[8]", "live.gain~", 0 ],
+			"obj-60.1::obj-25" : [ "live.gain~", "live.gain~", 0 ],
+			"obj-87.2::obj-25" : [ "live.gain~[20]", "live.gain~", 0 ],
+			"obj-94.3::obj-25" : [ "live.gain~[3]", "live.gain~", 0 ],
+			"obj-105" : [ "live.button[9]", "live.button[1]", 0 ],
+			"obj-81.3::obj-25" : [ "live.gain~[15]", "live.gain~", 0 ],
+			"obj-76.2::obj-25" : [ "live.gain~[32]", "live.gain~", 0 ],
+			"obj-79.3::obj-25" : [ "live.gain~[27]", "live.gain~", 0 ],
+			"obj-98.4::obj-25" : [ "live.gain~[10]", "live.gain~", 0 ],
+			"obj-90.4::obj-25" : [ "live.gain~[22]", "live.gain~", 0 ],
+			"obj-94.1::obj-25" : [ "live.gain~[1]", "live.gain~", 0 ],
+			"obj-112" : [ "live.button[13]", "live.button[1]", 0 ],
 			"obj-81.1::obj-25" : [ "live.gain~[13]", "live.gain~", 0 ],
 			"obj-113" : [ "live.button[15]", "live.button[1]", 0 ],
-			"obj-94.1::obj-25" : [ "live.gain~[1]", "live.gain~", 0 ],
-			"obj-127" : [ "live.button", "live.button", 0 ],
+			"obj-108" : [ "live.button[11]", "live.button[1]", 0 ],
+			"obj-60.4::obj-25" : [ "live.gain~[33]", "live.gain~", 0 ],
+			"obj-109" : [ "live.button[12]", "live.button[1]", 0 ],
+			"obj-79.1::obj-25" : [ "live.gain~[25]", "live.gain~", 0 ],
 			"obj-98.2::obj-25" : [ "live.gain~[12]", "live.gain~", 0 ],
-			"obj-96.4::obj-25" : [ "live.gain~[6]", "live.gain~", 0 ],
+			"obj-90.2::obj-25" : [ "live.gain~[24]", "live.gain~", 0 ],
+			"obj-96.3::obj-25" : [ "live.gain~[7]", "live.gain~", 0 ],
+			"obj-87.3::obj-25" : [ "live.gain~[19]", "live.gain~", 0 ],
+			"obj-94.4::obj-25" : [ "live.gain~[2]", "live.gain~", 0 ],
+			"obj-81.4::obj-25" : [ "live.gain~[14]", "live.gain~", 0 ],
+			"obj-110" : [ "live.button[10]", "live.button[1]", 0 ],
+			"obj-111" : [ "live.button[14]", "live.button[1]", 0 ],
 			"parameterbanks" : 			{
 
 			}
 ,
 			"parameter_overrides" : 			{
-				"obj-90.1::obj-25" : 				{
-					"parameter_longname" : "live.gain~[21]"
-				}
-,
-				"obj-90.3::obj-25" : 				{
-					"parameter_longname" : "live.gain~[23]"
+				"obj-60.2::obj-25" : 				{
+					"parameter_longname" : "live.gain~[35]"
 				}
 ,
 				"obj-76.3::obj-25" : 				{
 					"parameter_longname" : "live.gain~[31]"
 				}
 ,
+				"obj-79.4::obj-25" : 				{
+					"parameter_longname" : "live.gain~[26]"
+				}
+,
+				"obj-96.1::obj-25" : 				{
+					"parameter_longname" : "live.gain~[5]"
+				}
+,
+				"obj-87.1::obj-25" : 				{
+					"parameter_longname" : "live.gain~[17]"
+				}
+,
+				"obj-94.2::obj-25" : 				{
+					"parameter_longname" : "live.gain~[4]"
+				}
+,
+				"obj-81.2::obj-25" : 				{
+					"parameter_longname" : "live.gain~[16]"
+				}
+,
+				"obj-76.1::obj-25" : 				{
+					"parameter_longname" : "live.gain~[29]"
+				}
+,
+				"obj-79.2::obj-25" : 				{
+					"parameter_longname" : "live.gain~[28]"
+				}
+,
 				"obj-98.3::obj-25" : 				{
 					"parameter_longname" : "live.gain~[11]"
+				}
+,
+				"obj-90.3::obj-25" : 				{
+					"parameter_longname" : "live.gain~[23]"
+				}
+,
+				"obj-96.4::obj-25" : 				{
+					"parameter_longname" : "live.gain~[6]"
 				}
 ,
 				"obj-87.4::obj-25" : 				{
 					"parameter_longname" : "live.gain~[18]"
 				}
 ,
-				"obj-81.3::obj-25" : 				{
-					"parameter_longname" : "live.gain~[15]"
+				"obj-98.1::obj-25" : 				{
+					"parameter_longname" : "live.gain~[9]"
 				}
 ,
-				"obj-98.4::obj-25" : 				{
-					"parameter_longname" : "live.gain~[10]"
+				"obj-60.3::obj-25" : 				{
+					"parameter_longname" : "live.gain~[34]"
 				}
 ,
-				"obj-96.3::obj-25" : 				{
-					"parameter_longname" : "live.gain~[7]"
+				"obj-76.4::obj-25" : 				{
+					"parameter_longname" : "live.gain~[30]"
 				}
 ,
-				"obj-76.2::obj-25" : 				{
-					"parameter_longname" : "live.gain~[32]"
+				"obj-90.1::obj-25" : 				{
+					"parameter_longname" : "live.gain~[21]"
 				}
 ,
 				"obj-96.2::obj-25" : 				{
@@ -3490,104 +3546,72 @@
 					"parameter_longname" : "live.gain~"
 				}
 ,
-				"obj-87.3::obj-25" : 				{
-					"parameter_longname" : "live.gain~[19]"
-				}
-,
-				"obj-81.2::obj-25" : 				{
-					"parameter_longname" : "live.gain~[16]"
-				}
-,
-				"obj-79.3::obj-25" : 				{
-					"parameter_longname" : "live.gain~[27]"
-				}
-,
-				"obj-94.2::obj-25" : 				{
-					"parameter_longname" : "live.gain~[4]"
-				}
-,
-				"obj-60.2::obj-25" : 				{
-					"parameter_longname" : "live.gain~[35]"
-				}
-,
-				"obj-79.2::obj-25" : 				{
-					"parameter_longname" : "live.gain~[28]"
-				}
-,
-				"obj-96.1::obj-25" : 				{
-					"parameter_longname" : "live.gain~[5]"
-				}
-,
-				"obj-79.1::obj-25" : 				{
-					"parameter_longname" : "live.gain~[25]"
-				}
-,
-				"obj-76.4::obj-25" : 				{
-					"parameter_longname" : "live.gain~[30]"
-				}
-,
-				"obj-81.4::obj-25" : 				{
-					"parameter_longname" : "live.gain~[14]"
-				}
-,
-				"obj-79.4::obj-25" : 				{
-					"parameter_longname" : "live.gain~[26]"
-				}
-,
-				"obj-60.3::obj-25" : 				{
-					"parameter_longname" : "live.gain~[34]"
-				}
-,
-				"obj-94.4::obj-25" : 				{
-					"parameter_longname" : "live.gain~[2]"
-				}
-,
-				"obj-90.2::obj-25" : 				{
-					"parameter_longname" : "live.gain~[24]"
-				}
-,
-				"obj-98.1::obj-25" : 				{
-					"parameter_longname" : "live.gain~[9]"
+				"obj-87.2::obj-25" : 				{
+					"parameter_longname" : "live.gain~[20]"
 				}
 ,
 				"obj-94.3::obj-25" : 				{
 					"parameter_longname" : "live.gain~[3]"
 				}
 ,
+				"obj-81.3::obj-25" : 				{
+					"parameter_longname" : "live.gain~[15]"
+				}
+,
+				"obj-76.2::obj-25" : 				{
+					"parameter_longname" : "live.gain~[32]"
+				}
+,
+				"obj-79.3::obj-25" : 				{
+					"parameter_longname" : "live.gain~[27]"
+				}
+,
+				"obj-98.4::obj-25" : 				{
+					"parameter_longname" : "live.gain~[10]"
+				}
+,
 				"obj-90.4::obj-25" : 				{
 					"parameter_longname" : "live.gain~[22]"
-				}
-,
-				"obj-87.2::obj-25" : 				{
-					"parameter_longname" : "live.gain~[20]"
-				}
-,
-				"obj-60.4::obj-25" : 				{
-					"parameter_longname" : "live.gain~[33]"
-				}
-,
-				"obj-76.1::obj-25" : 				{
-					"parameter_longname" : "live.gain~[29]"
-				}
-,
-				"obj-87.1::obj-25" : 				{
-					"parameter_longname" : "live.gain~[17]"
-				}
-,
-				"obj-81.1::obj-25" : 				{
-					"parameter_longname" : "live.gain~[13]"
 				}
 ,
 				"obj-94.1::obj-25" : 				{
 					"parameter_longname" : "live.gain~[1]"
 				}
 ,
+				"obj-81.1::obj-25" : 				{
+					"parameter_longname" : "live.gain~[13]"
+				}
+,
+				"obj-60.4::obj-25" : 				{
+					"parameter_longname" : "live.gain~[33]"
+				}
+,
+				"obj-79.1::obj-25" : 				{
+					"parameter_longname" : "live.gain~[25]"
+				}
+,
 				"obj-98.2::obj-25" : 				{
 					"parameter_longname" : "live.gain~[12]"
 				}
 ,
-				"obj-96.4::obj-25" : 				{
-					"parameter_longname" : "live.gain~[6]"
+				"obj-90.2::obj-25" : 				{
+					"parameter_longname" : "live.gain~[24]"
+				}
+,
+				"obj-96.3::obj-25" : 				{
+					"parameter_longname" : "live.gain~[7]"
+				}
+,
+				"obj-87.3::obj-25" : 				{
+					"parameter_longname" : "live.gain~[19]"
+				}
+,
+				"obj-94.4::obj-25" : 				{
+					"parameter_longname" : "live.gain~[2]"
+				}
+,
+				"obj-81.4::obj-25" : 				{
+					"parameter_longname" : "live.gain~[14]"
 				}
 
 			}

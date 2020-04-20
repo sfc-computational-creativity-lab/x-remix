@@ -14,6 +14,7 @@ require('@tensorflow/tfjs-node');
 const SEGMENT_MIN_LENGTH = 150; // Minimum length of an audio segment
 
 const INPUT_SPEC_LENGTH = 128;
+const SR = 16000; // sampling rate
 
 // keras-based model to classify drum kit sound based on its spectrogram.
 // python script: https://gist.github.com/naotokui/a2b331dd206b13a70800e862cfe7da3c
@@ -79,7 +80,7 @@ Max.addHandler("find_segment", (position) => {
 
 // Classification
 Max.addHandler("classify", (startMS, endMS) => {
-    var resampled = createBuffer(buffer_, {rate:22100}) // resample for spectrogram
+    var resampled = createBuffer(buffer_, {rate: SR}) // resample for spectrogram
 
     let prediction = classifyAudioSegment(resampled, startMS, endMS);
     Max.outlet("classify", prediction);
@@ -95,11 +96,21 @@ function classifyAudioSegment(buffer, startMS, endMS, fftSize = 1024, hopSize = 
         return;
     }
 
+    // for (var i=0; i <buffer.length; i++) buffer[i] = 0.0;
+    
     // Get spectrogram matrix
     let db_spectrogram = classify.createSpectrogram(buffer, startMS, endMS, fftSize, hopSize, melCount, false);
 
+    Max.post(db_spectrogram.length);
+    for (var i=0; i <db_spectrogram.length; i++) {
+        for (var j=0; j<128; j++){
+            Max.post(i, j, db_spectrogram[i][j]);
+        }
+    }
+
+
     // Create tf.tensor2d
-    // This audio classification model expects spectrograms of [128, 32]  (# of melbanks: 128 / duration: 32 FFT windows) 
+    // This audio classification model expects spectrograms of [128, 128]  (# of melbanks: 128 / duration: 128 FFT windows) 
     const tfbuffer = tf.buffer([melCount, specLength]);
 
     // Initialize the tfbuffer.  TODO: better initialization??
@@ -119,7 +130,7 @@ function classifyAudioSegment(buffer, startMS, endMS, fftSize = 1024, hopSize = 
 
     // Reshape for prediction
     input_tensor = tfbuffer.toTensor(); // tf.buffer -> tf.tensor
-    input_tensor = tf.reshape(input_tensor, [1, input_tensor.shape[0], input_tensor.shape[1], 1]); // [1, 128, 32, 1]
+    input_tensor = tf.reshape(input_tensor, [1, input_tensor.shape[0], input_tensor.shape[1], 1]); // [1, 128, 128, 1]
         
     // Prediction!
     try {
@@ -131,7 +142,7 @@ function classifyAudioSegment(buffer, startMS, endMS, fftSize = 1024, hopSize = 
         }
         return predictions_;
     } catch (err) {
-        Max.error(err);
+        Max.post(err);
         console.error(err);
     }
 }
@@ -178,7 +189,6 @@ Max.addHandler("sample", (filepath) => {
             for (var i = 0; i < onsets.length - 1; i++){
                 costs.push(1.0 - matrix[i][j]);
             }
-            Max.post(costs);
             var segmentid = costs.indexOf(Math.max(...costs));
             assignments.push([segmentid, j]);
         }

@@ -32,7 +32,7 @@ exports.sliceAudioBufferInMono = sliceAudioBufferInMono;
 
 // Create spectrogram
 // returnsImage: flag to return a p5 Image
-function createSpectrogram(buffer, startMS, endMS, fftSize = 1024, hopSize = 256, melCount=96, returnsImage = false){
+function createSpectrogram(buffer, startMS, endMS, fftSize = 1024, hopSize = 256, melCount = 128, returnsImage = false){
     const channelOne = buffer.getChannelData(0);  // use only the first channel
     const sampleRate = buffer.sampleRate;
     const db_spectrogram = [];
@@ -51,13 +51,14 @@ function createSpectrogram(buffer, startMS, endMS, fftSize = 1024, hopSize = 256
     var maxdb = -100;
     while (currentOffset + fftSize < endSample) {
        const segment = channelOne.slice(currentOffset, currentOffset + fftSize); 
+
        fft.forward(segment);  // generate spectrum for this segment
        let spectrum = fft.spectrum.map(x => x * x); // should be power spectrum!
  
        const melspec = applyFilterbank(spectrum, melFilterbanks);
  
        for (let j = 0; j < melCount; j++) {
-          melspec[j] += 0.000000001; // avoid minus infinity
+          melspec[j] += 1.0e-8; // avoid minus infinity
        }
  
        const decibels = new Float32Array(melCount); 
