@@ -106,7 +106,7 @@ function getOnsets(samples, min_length = 100){
       }
     }
   }
-  peaks.push(samples.duration); // add the end of file
+  peaks.push(samples.duration * 1000); // add the end of file
 
   return peaks;
 }
