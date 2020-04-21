@@ -4,12 +4,14 @@ const dsp = require('./dsp.js');
 
 const fftjs = require('fft.js');
 
-const audio_utils = require('./audio_utils.ts');
+const audio_utils = require('./audio_utils');
 
 const Max = require('max-api');
 
 const MIN_DB = -80.0;
 exports.MIN_DB = MIN_DB;
+
+var offlineContext = require('audio-context')({offline: true, sampleRate:16000, length:16000})
 
 // Strip audio buffer and make it mono
 function sliceAudioBufferInMono(buffer, start_sec, end_sec){   
@@ -22,8 +24,8 @@ function sliceAudioBufferInMono(buffer, start_sec, end_sec){
    var numSamples = (end_sec - start_sec) * sampleRate;
    var startOffset = Math.floor(start_sec * sampleRate);
 
-   var o = createContext({offline: true, sampleRate: sampleRate, length: numSamples});
-//    var o = new OfflineAudioContext(1, numSamples, sampleRate);
+   //var o = createContext({offline: true, sampleRate: sampleRate, length: numSamples});
+   var o = new OfflineAudioContext(1, numSamples, sampleRate);
    var newBuffer = o.createBuffer(1, numSamples, sampleRate);
 
    // Temp array
@@ -34,10 +36,18 @@ function sliceAudioBufferInMono(buffer, start_sec, end_sec){
 }
 exports.sliceAudioBufferInMono = sliceAudioBufferInMono;
 
-
-async function createSpectrogramMagenta(audioBuffer, startMS, endMS, sampleRate, fftSize = 1024, hopSize = 256, melCount = 128){
-   var monoBuffer = audio_utils.resampleAndMakeMono(buffer, sampleRate);
-
+function createSpectrogramMagenta(buffer, startMS, endMS, sampleRate, 
+                                 fftSize = 1024, hopSize = 256, melCount = 128){
+    var v = await audio_utils.preprocessAudio(buffer);
+    Max.post(v);
+   // const resampledMonoAudio = await audio_utils.resampleAndMakeMono(audioBuffer);
+   // return audio_utils.powerToDb(audio_utils.melSpectrogram(resampledMonoAudio, {
+   //    sampleRate: sampleRate,
+   //    hopLength: hopSize,
+   //    nMels: melCount,
+   //    nFft: fftSize,
+   //    fMin: 0,
+   // }));
 }
 
 exports.createSpectrogramMagenta = createSpectrogramMagenta;
@@ -57,9 +67,7 @@ function createSpectrogram(buffer, startMS, endMS, fftSize = 1024, hopSize = 256
     // Mel Filterbanks
     var melFilterbanks = constructMelFilterBank(fftSize/2, melCount, 
                                                 lowF=0, highF=sampleRate/2, sr=sampleRate);
- 
-    var mfcc = MFCC.construct()
-                                                
+                                                 
     // Segment 
     let currentOffset = startMS / 1000. * sampleRate;
     let endSample = endMS /1000. * sampleRate;
@@ -67,9 +75,6 @@ function createSpectrogram(buffer, startMS, endMS, fftSize = 1024, hopSize = 256
     var maxdb = -100;
     while (currentOffset + fftSize < endSample) {
        const segment = channelOne.slice(currentOffset, currentOffset + fftSize); 
-
-       var phasors = ftjs.fft(segment);
-       Max.post(phasors);
 
        fft.forward(segment);  // generate spectrum for this segment
        let spectrum = fft.spectrum.map(x => x * x); // should be power spectrum!

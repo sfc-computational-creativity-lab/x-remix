@@ -6,14 +6,21 @@
   "dependencies": {
     "@tensorflow/tfjs": "^0.13.2",
     "@tensorflow/tfjs-node": "^0.1.18",
+    "@types/ndarray": "^1.0.7",
     "audio-buffer-from": "^1.1.1",
+    "audio-context": "^1.0.3",
     "audio-loader": "^1.0.3",
     "munkres-js": "^1.2.2",
-    "node-mfcc": "0.0.2"
+    "node-mfcc": "0.0.2",
+    "typescript": "^3.8.3",
+    "typescript-require": "^0.2.10"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "ts-node-dev": "^1.0.0-pre.44"
+  },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "tsc": "tsc"
   },
   "repository": {
     "type": "git",

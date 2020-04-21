@@ -97,18 +97,18 @@ function classifyAudioSegment(buffer, startMS, endMS, fftSize = 1024, hopSize = 
     }
 
     // for (var i=0; i <buffer.length; i++) buffer[i] = 0.0;
-    let db_scpectrogram = classify.createSpectrogramMagenta(buffer, startMS, endMS);
-    Max.post("magenta",db_spectrogram);
+    let db_spectrogram = classify.createSpectrogramMagenta(buffer, startMS, endMS);
+    Max.post("magenta--", typeof(db_spectrogram));
 
     // Get spectrogram matrix
-    let db_spectrogram = classify.createSpectrogram(buffer, startMS, endMS, fftSize, hopSize, melCount, false);
+    db_spectrogram = classify.createSpectrogram(buffer, startMS, endMS, fftSize, hopSize, melCount, false);
 
-    Max.post(db_spectrogram.length);
-    for (var i=0; i <db_spectrogram.length; i++) {
-        for (var j=0; j<128; j++){
-            Max.post(i, j, db_spectrogram[i][j]);
-        }
-    }
+    // Max.post(db_spectrogram.length);
+    // for (var i=0; i <db_spectrogram.length; i++) {
+    //     for (var j=0; j<128; j++){
+    //         Max.post(i, j, db_spectrogram[i][j]);
+    //     }
+    // }
 
 
     // Create tf.tensor2d
