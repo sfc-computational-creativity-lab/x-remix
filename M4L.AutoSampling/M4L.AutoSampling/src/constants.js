@@ -1,0 +1,15 @@
+
+const MODEL_MEL_LENGTH      = 128;
+const MODEL_MEL_NUM         = 128;
+const MODEL_HOP_SIZE        = 256;
+const MODEL_FFT_SIZE        = 1024
+const MODEL_SR             = 16000;
+
+const SEGMENT_MIN_LENGTH    = 150; // ms
+
+exports.MODEL_MEL_LENGTH = MODEL_MEL_LENGTH;
+exports.MODEL_MEL_NUM = MODEL_MEL_NUM;
+exports.MODEL_HOP_SIZE = MODEL_HOP_SIZE;
+exports.MODEL_FFT_SIZE = MODEL_FFT_SIZE;
+exports.MODEL_SR = MODEL_SR;
+exports.SEGMENT_MIN_LENGTH = SEGMENT_MIN_LENGTH;

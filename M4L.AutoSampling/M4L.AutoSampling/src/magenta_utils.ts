@@ -1,7 +1,6 @@
 /**
  * Utiltities for loading audio and computing mel spectrograms, based on
- * {@link https://github.com/google/web-audio-recognition/blob/librosa-compat}.
- * TODO(adarob): Rewrite using tfjs.
+ * {@link https://github.com/magenta/magenta-js/blob/master/music/src/core/audio_utils.ts}.
  *
  * @license
  * Copyright 2018 Google Inc. All Rights Reserved.
@@ -19,30 +18,6 @@
  */
 //@ts-ignore
 import * as FFT from 'fft.js';
-import * as ndarray from 'ndarray';
-//@ts-ignore
-import * as resample from 'ndarray-resample';
-
-import * as logging from './logging';
-
-const audioload = require('audio-loader');
-
-// Safari Webkit only supports 44.1kHz audio.
-// const WEBKIT_SAMPLE_RATE = 44100;
-const SAMPLE_RATE = 16000;
-// tslint:disable-next-line:no-any
-// const appeaseTsLintWindow = (window as any);
-// const isSafari = appeaseTsLintWindow.webkitOfflineAudioContext as boolean;
-// tslint:disable-next-line:variable-name
-// const offlineCtx = //isSafari ?
-//     // new appeaseTsLintWindow.webkitOfflineAudioContext(
-//         // 1, WEBKIT_SAMPLE_RATE, WEBKIT_SAMPLE_RATE) :
-//     new OfflineAudioContext(1, SAMPLE_RATE, SAMPLE_RATE);
-
-const offlineCtx = require('audio-context')({offline: true, sampleRate:16000, length:16000})
-// const offlineCtx = new OfflineAudioContext(1, SAMPLE_RATE, SAMPLE_RATE); //createContext({offline: true, sampleRate: SAMPLE_RATE, length: SAMPLE_RATE});
-// console.log(offlineCtx);
-
 
 /**
  * Parameters for computing a spectrogram from audio.
@@ -83,17 +58,6 @@ export async function loadAudioFromUrl(url: string): Promise<AudioBuffer> {
  * @returns The loaded audio in an AudioBuffer.
  */
 export async function loadAudioFromFile(blob: Blob): Promise<AudioBuffer> {
-  // const fileReader = new FileReader();
-  // const loadFile: Promise<ArrayBuffer> = new Promise((resolve, reject) => {
-  //   fileReader.onerror = () => {
-  //     fileReader.abort();
-  //     reject(new DOMException('Something went wrong reading that file.'));
-  //   };
-  //   fileReader.onload = () => {
-  //     resolve(fileReader.result as ArrayBuffer);
-  //   };
-  //   fileReader.readAsArrayBuffer(blob);
-  // });
   return audioload(blob);
 }
 
@@ -145,53 +109,6 @@ export function powerToDb(spec: Float32Array[], amin = 1e-8, topDb = 80.0) {
     }
   }
   return logSpec;
-}
-
-function getMonoAudio(audioBuffer: AudioBuffer) {
-  if (audioBuffer.numberOfChannels === 1) {
-    return audioBuffer.getChannelData(0);
-  }
-  if (audioBuffer.numberOfChannels !== 2) {
-    throw Error(
-        `${audioBuffer.numberOfChannels} channel audio is not supported.`);
-  }
-  const ch0 = audioBuffer.getChannelData(0);
-  const ch1 = audioBuffer.getChannelData(1);
-
-  const mono = new Float32Array(audioBuffer.length);
-  for (let i = 0; i < audioBuffer.length; ++i) {
-    mono[i] = (ch0[i] + ch1[i]) / 2;
-  }
-  return mono;
-}
-
-export async function resampleAndMakeMono(
-    audioBuffer: AudioBuffer, targetSr = SAMPLE_RATE) {
-  if (audioBuffer.sampleRate === targetSr) {
-    return getMonoAudio(audioBuffer);
-  }
-  const sourceSr = audioBuffer.sampleRate;
-  const lengthRes = audioBuffer.length * targetSr / sourceSr;
-  if (0) {
-    const bufferSource = offlineCtx.createBufferSource();
-    bufferSource.buffer = audioBuffer;
-    bufferSource.connect(offlineCtx.destination);
-    bufferSource.start();
-    return offlineCtx.startRendering().then(
-        (buffer: AudioBuffer) => buffer.getChannelData(0));
-  } else {
-    // // Safari does not support resampling with WebAudio.
-    // logging.log(
-    //     'Safari does not support WebAudio resampling, so this may be slow.',
-    //     'O&F', logging.Level.WARN);
-
-    const originalAudio = getMonoAudio(audioBuffer);
-    const resampledAudio = new Float32Array(lengthRes);
-    resample(
-        ndarray(resampledAudio, [lengthRes]),
-        ndarray(originalAudio, [originalAudio.length]));
-    return resampledAudio;
-  }
 }
 
 interface MelParams {

@@ -2,6 +2,7 @@ const path = require('path');
 const Max = require('max-api');
 
 const onset = require('./onset.js');
+const audio_utils = require('./audio_utils.js');
 const classify = require('./audio_classification.js');
 var munkres = require('munkres-js'); //https://github.com/addaleax/munkres-js
 
@@ -11,10 +12,11 @@ const tf = require('@tensorflow/tfjs');
 require('@tensorflow/tfjs-node');
 
 // Constants
-const SEGMENT_MIN_LENGTH = 150; // Minimum length of an audio segment
-
-const INPUT_SPEC_LENGTH = 128;
-const SR = 16000; // sampling rate
+const MODEL_SR = require('./constants.js').MODEL_SR;
+const MODEL_HOP_SIZE = require('./constants.js').MODEL_HOP_SIZE;
+const MODEL_FFT_SIZE = require('./constants.js').MODEL_FFT_SIZE;
+const MODEL_MEL_LENGTH = require('./constants.js').MODEL_MEL_LENGTH;
+const MODEL_MEL_NUM = require('./constants.js').MODEL_MEL_NUM;
 
 // keras-based model to classify drum kit sound based on its spectrogram.
 // python script: https://gist.github.com/naotokui/a2b331dd206b13a70800e862cfe7da3c
@@ -52,11 +54,18 @@ Max.post(`Loaded the ${path.basename(__filename)} script`);
 
 // Segmentation
 Max.addHandler("segments", (filepath) => {
-    load(filepath).then(function (buffer) {
-        var onsets = onset.getOnsets(buffer, SEGMENT_MIN_LENGTH);
-        buffer_ = buffer;        
-        onsets_ = onsets;
+    audio_utils.loadResampleAndMakeMono(filepath, MODEL_SR).then(buffer => {
+        // Store globally
+        buffer_ = buffer; 
+
+        // Get onsets
+        var onsets = onset.getOnsets(buffer_, MODEL_SR);   
+        onsets_ = onsets; // store 
         Max.outlet("segments", onsets);
+
+
+        Max.post(onsets_);
+
     }).catch(function (err) {
         Max.post(err);
     });
@@ -70,7 +79,6 @@ Max.addHandler("find_segment", (position) => {
     } else {
         for (let i = 0; i < onsets_.length - 1; i++) {
             if (onsets_[i] < position && position <= onsets_[i + 1]) {
-                Max.post("segment", i, onsets_[i], onsets_[i + 1]);
                 Max.outlet("find_segment", onsets_[i], onsets_[i + 1]);
                 break;
             }
@@ -80,9 +88,8 @@ Max.addHandler("find_segment", (position) => {
 
 // Classification
 Max.addHandler("classify", (startMS, endMS) => {
-    var resampled = createBuffer(buffer_, {rate: SR}) // resample for spectrogram
-
-    let prediction = classifyAudioSegment(resampled, startMS, endMS);
+    // classify segmennt
+    let prediction = classifyAudioSegment(buffer_, startMS, endMS);
     Max.outlet("classify", prediction);
 
     let classId = argMax(prediction);
@@ -90,18 +97,21 @@ Max.addHandler("classify", (startMS, endMS) => {
 });
 
 // Classification with TensorFlow
-function classifyAudioSegment(buffer, startMS, endMS, fftSize = 1024, hopSize = 256, melCount = 128, specLength = INPUT_SPEC_LENGTH) {
+function classifyAudioSegment(buffer, startMS, endMS, sampleRate = MODEL_SR, fftSize = MODEL_FFT_SIZE, 
+                    hopSize = MODEL_HOP_SIZE, melCount = MODEL_MEL_NUM, specLength = MODEL_MEL_LENGTH) {
     if (typeof isModelLoaded === "undefined" || !isModelLoaded) {
         Max.post("Error: TF Model is not loaded.");
         return;
     }
 
     // for (var i=0; i <buffer.length; i++) buffer[i] = 0.0;
-    let db_spectrogram = classify.createSpectrogramMagenta(buffer, startMS, endMS);
-    Max.post("magenta--", typeof(db_spectrogram));
+    let db_spectrogram = audio_utils.getMelspectrogramForClassification(buffer, startMS, endMS, sampleRate,
+                                                         fftSize, hopSize, melCount);
+ 
+    Max.post("magenta--", db_spectrogram.length, db_spectrogram[0].length);
 
     // Get spectrogram matrix
-    db_spectrogram = classify.createSpectrogram(buffer, startMS, endMS, fftSize, hopSize, melCount, false);
+    // db_spectrogram = classify.createSpectrogram(buffer, startMS, endMS, fftSize, hopSize, melCount, false);
 
     // Max.post(db_spectrogram.length);
     // for (var i=0; i <db_spectrogram.length; i++) {
@@ -109,7 +119,6 @@ function classifyAudioSegment(buffer, startMS, endMS, fftSize = 1024, hopSize = 
     //         Max.post(i, j, db_spectrogram[i][j]);
     //     }
     // }
-
 
     // Create tf.tensor2d
     // This audio classification model expects spectrograms of [128, 128]  (# of melbanks: 128 / duration: 128 FFT windows) 
@@ -157,25 +166,27 @@ function argMax(array) {
 // Crete drum set
 Max.addHandler("sample", (filepath) => {
 
-    // segmentation
-    load(filepath).then((buffer) => {
-        var onsets = onset.getOnsets(buffer, SEGMENT_MIN_LENGTH);
-        buffer_ = buffer;        
-        onsets_ = onsets;
+    Max.post(filepath);
+
+    audio_utils.loadResampleAndMakeMono(filepath, MODEL_SR).then(buffer => {
+        // Store globally
+        buffer_ = buffer; 
+
+        // Get onsets
+        var onsets = onset.getOnsets(buffer, MODEL_SR);   
+        onsets_ = onsets; // store 
+        Max.outlet("segments", onsets);
+
         return [onsets, buffer];
-    })
-    // classification
-    .then(([onsets, buffer]) => {
-        // resample for spectrogram
-        var resampled = createBuffer(buffer, {rate:22100}) 
- 
+    }).then(([onsets, buffer]) => {
+
         // classify each segment
         var matrix = [];
         for (var i = 0; i < onsets.length - 1; i++){
             var start   = onsets[ i ];
             var end     = onsets[ i+1 ]
-            var prediction = classifyAudioSegment(resampled, start, end);
-
+            var prediction = classifyAudioSegment(buffer, start, end);
+            Max.post(prediction);
             // For Hangarian Assignment Algorithm, We need a cost matrix
             var costs = [];
             for (var j=0; j < prediction.length; j++){

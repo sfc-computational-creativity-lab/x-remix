@@ -1,18 +1,15 @@
 
 const dsp = require('./dsp.js');
 
-// Get onsets based on changes in spectrum flux
-function getOnsets(samples, min_length = 100){
+const SEGMENT_MIN_LENGTH = require('./constants.js').SEGMENT_MIN_LENGTH; // Minimum length of an audio segment
 
-  // Get a buffer of samples from the left channel
-  var bufferSamples = samples.getChannelData(0);
+// Get onsets based on changes in spectrum flux
+function getOnsets(bufferSamples, sampleRate, min_length = SEGMENT_MIN_LENGTH){
 
   const THRESHOLD_WINDOW_SIZE = 10;
   const MULTIPLIER            = 1.5; //1.5; TODO: find the best threshold
   const SAMPLE_SIZE           = 1024;
   const FFT2SIZE              = 1024;
-
-  var sampleRate = samples.sampleRate;
 
   var fft  = new dsp.FFT(SAMPLE_SIZE, sampleRate);
   var fft2 = new dsp.FFT(FFT2SIZE,    sampleRate / SAMPLE_SIZE);
@@ -106,7 +103,7 @@ function getOnsets(samples, min_length = 100){
       }
     }
   }
-  peaks.push(samples.duration * 1000); // add the end of file
+  peaks.push(bufferSamples.length / sampleRate * 1000.); // add the end of file
 
   return peaks;
 }

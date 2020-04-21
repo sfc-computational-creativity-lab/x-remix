@@ -36,10 +36,10 @@ function sliceAudioBufferInMono(buffer, start_sec, end_sec){
 }
 exports.sliceAudioBufferInMono = sliceAudioBufferInMono;
 
-function createSpectrogramMagenta(buffer, startMS, endMS, sampleRate, 
+async function createSpectrogramMagenta(buffer, startMS, endMS, sampleRate, 
                                  fftSize = 1024, hopSize = 256, melCount = 128){
     var v = await audio_utils.preprocessAudio(buffer);
-    Max.post(v);
+    console.log(v);
    // const resampledMonoAudio = await audio_utils.resampleAndMakeMono(audioBuffer);
    // return audio_utils.powerToDb(audio_utils.melSpectrogram(resampledMonoAudio, {
    //    sampleRate: sampleRate,
