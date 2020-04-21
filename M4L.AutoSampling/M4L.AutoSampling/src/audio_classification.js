@@ -1,6 +1,10 @@
-const context = require('audio-context')()
+require('typescript-require');
+
 const dsp = require('./dsp.js');
-// const p5 = require('p5');
+
+const fftjs = require('fft.js');
+
+const audio_utils = require('./audio_utils.ts');
 
 const Max = require('max-api');
 
@@ -30,6 +34,14 @@ function sliceAudioBufferInMono(buffer, start_sec, end_sec){
 }
 exports.sliceAudioBufferInMono = sliceAudioBufferInMono;
 
+
+async function createSpectrogramMagenta(audioBuffer, startMS, endMS, sampleRate, fftSize = 1024, hopSize = 256, melCount = 128){
+   var monoBuffer = audio_utils.resampleAndMakeMono(buffer, sampleRate);
+
+}
+
+exports.createSpectrogramMagenta = createSpectrogramMagenta;
+
 // Create spectrogram
 // returnsImage: flag to return a p5 Image
 function createSpectrogram(buffer, startMS, endMS, fftSize = 1024, hopSize = 256, melCount = 128, returnsImage = false){
@@ -40,10 +52,14 @@ function createSpectrogram(buffer, startMS, endMS, fftSize = 1024, hopSize = 256
     // Create a fft object. Here we use default "Hanning" window function
     const fft = new dsp.FFT(fftSize, sampleRate); 
  
+   
+
     // Mel Filterbanks
     var melFilterbanks = constructMelFilterBank(fftSize/2, melCount, 
                                                 lowF=0, highF=sampleRate/2, sr=sampleRate);
  
+    var mfcc = MFCC.construct()
+                                                
     // Segment 
     let currentOffset = startMS / 1000. * sampleRate;
     let endSample = endMS /1000. * sampleRate;
@@ -51,6 +67,9 @@ function createSpectrogram(buffer, startMS, endMS, fftSize = 1024, hopSize = 256
     var maxdb = -100;
     while (currentOffset + fftSize < endSample) {
        const segment = channelOne.slice(currentOffset, currentOffset + fftSize); 
+
+       var phasors = ftjs.fft(segment);
+       Max.post(phasors);
 
        fft.forward(segment);  // generate spectrum for this segment
        let spectrum = fft.spectrum.map(x => x * x); // should be power spectrum!

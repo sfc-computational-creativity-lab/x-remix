@@ -1,3 +1,4 @@
 
 M4L.AutoSampling/M4L.AutoSampling/node_modules/*
 .DS_Store
+M4L.AutoSampling/M4L.AutoSampling/src/node_modules/*
