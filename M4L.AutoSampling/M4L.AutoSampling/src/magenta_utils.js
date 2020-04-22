@@ -56,7 +56,10 @@ exports.__esModule = true;
  */
 //@ts-ignore
 var FFT = require("fft.js");
+var ndarray = require("ndarray");
+var resample = require("ndarray-resample");
 var audioload = require('audio-loader');
+var SAMPLE_RATE = 16000;
 /**
  * Loads audio into AudioBuffer from a URL to transcribe.
  *
@@ -88,6 +91,39 @@ function loadAudioFromFile(blob) {
     });
 }
 exports.loadAudioFromFile = loadAudioFromFile;
+function getMonoAudio(audioBuffer) {
+    if (audioBuffer.numberOfChannels === 1) {
+        return audioBuffer.getChannelData(0);
+    }
+    if (audioBuffer.numberOfChannels !== 2) {
+        throw Error(audioBuffer.numberOfChannels + " channel audio is not supported.");
+    }
+    var ch0 = audioBuffer.getChannelData(0);
+    var ch1 = audioBuffer.getChannelData(1);
+    var mono = new Float32Array(audioBuffer.length);
+    for (var i = 0; i < audioBuffer.length; ++i) {
+        mono[i] = (ch0[i] + ch1[i]) / 2;
+    }
+    return mono;
+}
+function resampleAndMakeMono(audioBuffer, targetSr) {
+    if (targetSr === void 0) { targetSr = SAMPLE_RATE; }
+    return __awaiter(this, void 0, void 0, function () {
+        var sourceSr, lengthRes, originalAudio, resampledAudio;
+        return __generator(this, function (_a) {
+            if (audioBuffer.sampleRate === targetSr) {
+                return [2 /*return*/, getMonoAudio(audioBuffer)];
+            }
+            sourceSr = audioBuffer.sampleRate;
+            lengthRes = audioBuffer.length * targetSr / sourceSr;
+            originalAudio = getMonoAudio(audioBuffer);
+            resampledAudio = new Float32Array(lengthRes);
+            resample(ndarray(resampledAudio, [lengthRes]), ndarray(originalAudio, [originalAudio.length]));
+            return [2 /*return*/, resampledAudio];
+        });
+    });
+}
+exports.resampleAndMakeMono = resampleAndMakeMono;
 function melSpectrogram(y, params) {
     if (!params.power) {
         params.power = 2.0;
@@ -132,10 +168,10 @@ function powerToDb(spec, amin, topDb) {
             throw new Error("topDb must be non-negative.");
         }
         for (var i = 0; i < width; i++) {
-            // const maxVal = max(logSpec[i]);
+            // const maxVal = max(logSpec[i]);  // original code
             for (var j = 0; j < height; j++) {
                 logSpec[i][j] = Math.max(logSpec[i][j] - maxVal, -topDb);
-                // logSpec[i][j] = Math.max(logSpec[i][j], maxVal - topDb);
+                // logSpec[i][j] = Math.max(logSpec[i][j], maxVal - topDb); // original code
             }
         }
     }

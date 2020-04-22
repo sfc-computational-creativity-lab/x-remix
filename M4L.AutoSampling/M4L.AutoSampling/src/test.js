@@ -33,6 +33,7 @@ async function loadPretrainedModel() {
     return model;
 }
 
+console.log(10 /3);
 
 // // Classification with TensorFlow
 function classifyAudioSegment(buffer, startMS, endMS, sampleRate = MODEL_SR, fftSize = MODEL_FFT_SIZE, 
@@ -109,13 +110,13 @@ audio_utils.loadResampleAndMakeMono("./audio/akaikick.wav", MODEL_SR).then(buffe
     // Store globally
     // buffer_ = buffer; 
 
-    // console.log(buffer);
+    console.log(buffer.length);
 
     // // Get onsets
     
-    // var onsets = onset.getOnsets(buffer, MODEL_SR);   
-    // // onsets_ = onsets; // store 
-    // Max.outlet("segments", onsets);
+    var onsets = onset.getOnsets(buffer, MODEL_SR);   
+    // onsets_ = onsets; // store 
+    console.log("segments", onsets);
 
     // console.log(onsets);
 

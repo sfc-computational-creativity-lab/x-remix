@@ -102,6 +102,7 @@ function getOnsets(bufferSamples, sampleRate, min_length = SEGMENT_MIN_LENGTH){
       }
     }
   }
+
   peaks.push(bufferSamples.length / sampleRate * 1000.); // add the end of file
 
   return peaks;

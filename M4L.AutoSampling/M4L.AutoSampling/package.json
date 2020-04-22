@@ -11,6 +11,7 @@
     "audio-context": "^1.0.3",
     "audio-loader": "^1.0.3",
     "munkres-js": "^1.2.2",
+    "ndarray-resample": "^1.0.1",
     "node-mfcc": "0.0.2",
     "typescript": "^3.8.3",
     "typescript-require": "^0.2.10"

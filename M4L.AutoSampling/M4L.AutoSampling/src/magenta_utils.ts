@@ -19,7 +19,12 @@
 //@ts-ignore
 import * as FFT from 'fft.js';
 
+import * as ndarray from 'ndarray';
+import * as resample from 'ndarray-resample';
+
 var audioload = require('audio-loader');
+
+const SAMPLE_RATE = 16000;
 
 /**
  * Parameters for computing a spectrogram from audio.
@@ -62,6 +67,42 @@ export interface SpecParams {
 export async function loadAudioFromFile(blob: Blob): Promise<AudioBuffer> {
   return audioload(blob);
 }
+
+function getMonoAudio(audioBuffer: AudioBuffer) {
+  if (audioBuffer.numberOfChannels === 1) {
+    return audioBuffer.getChannelData(0);
+  }
+  if (audioBuffer.numberOfChannels !== 2) {
+    throw Error(
+        `${audioBuffer.numberOfChannels} channel audio is not supported.`);
+  }
+  const ch0 = audioBuffer.getChannelData(0);
+  const ch1 = audioBuffer.getChannelData(1);
+
+  const mono = new Float32Array(audioBuffer.length);
+  for (let i = 0; i < audioBuffer.length; ++i) {
+    mono[i] = (ch0[i] + ch1[i]) / 2;
+  }
+  return mono;
+}
+
+export async function resampleAndMakeMono(
+  audioBuffer: AudioBuffer, targetSr = SAMPLE_RATE) {
+  if (audioBuffer.sampleRate === targetSr) {
+    return getMonoAudio(audioBuffer);
+  }
+  const sourceSr = audioBuffer.sampleRate;
+  const lengthRes = audioBuffer.length * targetSr / sourceSr;
+
+
+  const originalAudio = getMonoAudio(audioBuffer);
+  const resampledAudio = new Float32Array(lengthRes);
+  resample(
+      ndarray(resampledAudio, [lengthRes]),
+      ndarray(originalAudio, [originalAudio.length]));
+  return resampledAudio;
+}
+
 
 export function melSpectrogram(
     y: Float32Array, params: SpecParams): Float32Array[] {
@@ -106,10 +147,10 @@ export function powerToDb(spec: Float32Array[], amin = 1e-8, topDb = 80.0) {
       throw new Error(`topDb must be non-negative.`);
     }
     for (let i = 0; i < width; i++) {
-      // const maxVal = max(logSpec[i]);
+      // const maxVal = max(logSpec[i]);  // original code
       for (let j = 0; j < height; j++) {
         logSpec[i][j] = Math.max(logSpec[i][j] - maxVal,  -topDb);
-        // logSpec[i][j] = Math.max(logSpec[i][j], maxVal - topDb);
+        // logSpec[i][j] = Math.max(logSpec[i][j], maxVal - topDb); // original code
       }
     }
   }

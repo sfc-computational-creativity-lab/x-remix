@@ -11,6 +11,12 @@ const MODEL_MEL_NUM = require('./constants.js').MODEL_MEL_NUM;
 // var MODEL_INPUT_AUDIO_SEC = MODEL_HOP_SIZE/TARGET_SR * MODEL_MEL_LENGTH;
 var MODEL_INPUT_SAMPLES  = MODEL_HOP_SIZE * (MODEL_MEL_LENGTH - 1) + MODEL_FFT_SIZE; 
 
+async function loadResampleAndMakeMono(filepath, targetSR){
+  var buffer = await magenta_utils.loadAudioFromFile(filepath); // AudioBuffer
+  var resampledBuffer = await magenta_utils.resampleAndMakeMono(buffer, targetSR);
+  return resampledBuffer;
+}
+
 function getMonoAudio(audioBuffer) {
     if (audioBuffer.numberOfChannels === 1) {
       return audioBuffer.getChannelData(0);
@@ -27,13 +33,6 @@ function getMonoAudio(audioBuffer) {
       mono[i] = (ch0[i] + ch1[i]) / 2;
     }
     return mono;
-}
-
-async function loadResampleAndMakeMono(filepath, targetSR){
-    var buffer = await magenta_utils.loadAudioFromFile(filepath); // AudioBuffer
-    var resampledBuffer = createBuffer(buffer,  {rate: targetSR}); // resampled AudioBuffer
-    var monoBuffer = getMonoAudio(resampledBuffer);  // FloatArry
-    return monoBuffer;
 }
 
 function getMelspectrogram(resampledMonoAudio, sampleRate, fftSize, hopSize, melCount) {

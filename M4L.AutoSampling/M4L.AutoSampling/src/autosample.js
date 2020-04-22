@@ -199,8 +199,8 @@ Max.addHandler("sample", (filepath) => {
         // Max.post(matrix);
 
         // linear assignment problem
-        // var assignments = munkres(matrix);
-        // Max.post(assignments);
+        var assignments = munkres(matrix);
+        Max.post(assignments);
 
         return [onsets, assignments];
     })
