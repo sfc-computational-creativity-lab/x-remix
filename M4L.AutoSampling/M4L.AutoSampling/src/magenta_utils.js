@@ -57,8 +57,6 @@ exports.__esModule = true;
 //@ts-ignore
 var FFT = require("fft.js");
 var audioload = require('audio-loader');
-var SAMPLE_RATE = 16000;
-var offlineCtx = require('audio-context')({ offline: true, sampleRate: 16000, length: 16000 });
 /**
  * Loads audio into AudioBuffer from a URL to transcribe.
  *
@@ -68,16 +66,11 @@ var offlineCtx = require('audio-context')({ offline: true, sampleRate: 16000, le
  * @param url A path to a audio file to load.
  * @returns The loaded audio in an AudioBuffer.
  */
-function loadAudioFromUrl(url) {
-    return __awaiter(this, void 0, void 0, function () {
-        return __generator(this, function (_a) {
-            return [2 /*return*/, fetch(url)
-                    .then(function (body) { return body.arrayBuffer(); })
-                    .then(function (buffer) { return offlineCtx.decodeAudioData(buffer); })];
-        });
-    });
-}
-exports.loadAudioFromUrl = loadAudioFromUrl;
+// export async function loadAudioFromUrl(url: string): Promise<AudioBuffer> {
+//   return fetch(url)
+//       .then(body => body.arrayBuffer())
+//       .then(buffer => offlineCtx.decodeAudioData(buffer));
+// }
 /**
  * Loads audio into AudioBuffer from a Blob to transcribe.
  *
@@ -125,10 +118,13 @@ function powerToDb(spec, amin, topDb) {
     for (var i = 0; i < width; i++) {
         logSpec[i] = new Float32Array(height);
     }
+    var maxVal = -topDb;
     for (var i = 0; i < width; i++) {
         for (var j = 0; j < height; j++) {
             var val = spec[i][j];
             logSpec[i][j] = 10.0 * Math.log10(Math.max(amin, val));
+            if (logSpec[i][j] > maxVal)
+                maxVal = logSpec[i][j];
         }
     }
     if (topDb) {
@@ -136,9 +132,10 @@ function powerToDb(spec, amin, topDb) {
             throw new Error("topDb must be non-negative.");
         }
         for (var i = 0; i < width; i++) {
-            var maxVal = max(logSpec[i]);
+            // const maxVal = max(logSpec[i]);
             for (var j = 0; j < height; j++) {
-                logSpec[i][j] = Math.max(logSpec[i][j], maxVal - topDb);
+                logSpec[i][j] = Math.max(logSpec[i][j] - maxVal, -topDb);
+                // logSpec[i][j] = Math.max(logSpec[i][j], maxVal - topDb);
             }
         }
     }
@@ -380,23 +377,13 @@ function pow(arr, power) {
 function max(arr) {
     return arr.reduce(function (a, b) { return Math.max(a, b); });
 }
-function preprocessAudio(audioBuffer) {
-    return __awaiter(this, void 0, void 0, function () {
-        var resampledMonoAudio;
-        return __generator(this, function (_a) {
-            switch (_a.label) {
-                case 0: return [4 /*yield*/, resampleAndMakeMono(audioBuffer)];
-                case 1:
-                    resampledMonoAudio = _a.sent();
-                    return [2 /*return*/, powerToDb(melSpectrogram(resampledMonoAudio, {
-                            sampleRate: 16000,
-                            hopLength: 256,
-                            nMels: 128,
-                            nFft: 1024,
-                            fMin: 0
-                        }))];
-            }
-        });
-    });
-}
-exports.preprocessAudio = preprocessAudio;
+// export async function preprocessAudio(audioBuffer: AudioBuffer) {
+//   const resampledMonoAudio = await resampleAndMakeMono(audioBuffer);
+//   return powerToDb(melSpectrogram(resampledMonoAudio, {
+//     sampleRate: 16000,
+//     hopLength: 256,
+//     nMels: 128,
+//     nFft: 1024,
+//     fMin: 0,
+//   }));
+// }

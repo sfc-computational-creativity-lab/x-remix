@@ -19,6 +19,8 @@
 //@ts-ignore
 import * as FFT from 'fft.js';
 
+var audioload = require('audio-loader');
+
 /**
  * Parameters for computing a spectrogram from audio.
  */
@@ -42,11 +44,11 @@ export interface SpecParams {
  * @param url A path to a audio file to load.
  * @returns The loaded audio in an AudioBuffer.
  */
-export async function loadAudioFromUrl(url: string): Promise<AudioBuffer> {
-  return fetch(url)
-      .then(body => body.arrayBuffer())
-      .then(buffer => offlineCtx.decodeAudioData(buffer));
-}
+// export async function loadAudioFromUrl(url: string): Promise<AudioBuffer> {
+//   return fetch(url)
+//       .then(body => body.arrayBuffer())
+//       .then(buffer => offlineCtx.decodeAudioData(buffer));
+// }
 
 /**
  * Loads audio into AudioBuffer from a Blob to transcribe.
@@ -91,10 +93,12 @@ export function powerToDb(spec: Float32Array[], amin = 1e-8, topDb = 80.0) {
   for (let i = 0; i < width; i++) {
     logSpec[i] = new Float32Array(height);
   }
+  var maxVal = -topDb;
   for (let i = 0; i < width; i++) {
     for (let j = 0; j < height; j++) {
       const val = spec[i][j];
       logSpec[i][j] = 10.0 * Math.log10(Math.max(amin, val));
+      if (logSpec[i][j] > maxVal) maxVal = logSpec[i][j];
     }
   }
   if (topDb) {
@@ -102,9 +106,10 @@ export function powerToDb(spec: Float32Array[], amin = 1e-8, topDb = 80.0) {
       throw new Error(`topDb must be non-negative.`);
     }
     for (let i = 0; i < width; i++) {
-      const maxVal = max(logSpec[i]);
+      // const maxVal = max(logSpec[i]);
       for (let j = 0; j < height; j++) {
-        logSpec[i][j] = Math.max(logSpec[i][j], maxVal - topDb);
+        logSpec[i][j] = Math.max(logSpec[i][j] - maxVal,  -topDb);
+        // logSpec[i][j] = Math.max(logSpec[i][j], maxVal - topDb);
       }
     }
   }
@@ -392,13 +397,13 @@ function max(arr: Float32Array) {
   return arr.reduce((a, b) => Math.max(a, b));
 }
 
-export async function preprocessAudio(audioBuffer: AudioBuffer) {
-  const resampledMonoAudio = await resampleAndMakeMono(audioBuffer);
-  return powerToDb(melSpectrogram(resampledMonoAudio, {
-    sampleRate: 16000,
-    hopLength: 256,
-    nMels: 128,
-    nFft: 1024,
-    fMin: 0,
-  }));
-}
+// export async function preprocessAudio(audioBuffer: AudioBuffer) {
+//   const resampledMonoAudio = await resampleAndMakeMono(audioBuffer);
+//   return powerToDb(melSpectrogram(resampledMonoAudio, {
+//     sampleRate: 16000,
+//     hopLength: 256,
+//     nMels: 128,
+//     nFft: 1024,
+//     fMin: 0,
+//   }));
+// }

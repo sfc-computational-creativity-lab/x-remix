@@ -6,8 +6,6 @@ const audio_utils = require('./audio_utils.js');
 const classify = require('./audio_classification.js');
 var munkres = require('munkres-js'); //https://github.com/addaleax/munkres-js
 
-var load = require('audio-loader');
-var createBuffer = require('audio-buffer-from');
 const tf = require('@tensorflow/tfjs');
 require('@tensorflow/tfjs-node');
 
@@ -62,10 +60,7 @@ Max.addHandler("segments", (filepath) => {
         var onsets = onset.getOnsets(buffer_, MODEL_SR);   
         onsets_ = onsets; // store 
         Max.outlet("segments", onsets);
-
-
         Max.post(onsets_);
-
     }).catch(function (err) {
         Max.post(err);
     });
@@ -107,14 +102,12 @@ function classifyAudioSegment(buffer, startMS, endMS, sampleRate = MODEL_SR, fft
     // for (var i=0; i <buffer.length; i++) buffer[i] = 0.0;
     let db_spectrogram = audio_utils.getMelspectrogramForClassification(buffer, startMS, endMS, sampleRate,
                                                          fftSize, hopSize, melCount);
- 
-    Max.post("magenta--", db_spectrogram.length, db_spectrogram[0].length);
 
     // Get spectrogram matrix
     // db_spectrogram = classify.createSpectrogram(buffer, startMS, endMS, fftSize, hopSize, melCount, false);
 
     // Max.post(db_spectrogram.length);
-    // for (var i=0; i <db_spectrogram.length; i++) {
+    // for (var i=0; i <1; i++) {
     //     for (var j=0; j<128; j++){
     //         Max.post(i, j, db_spectrogram[i][j]);
     //     }
@@ -142,7 +135,7 @@ function classifyAudioSegment(buffer, startMS, endMS, sampleRate = MODEL_SR, fft
     // Reshape for prediction
     input_tensor = tfbuffer.toTensor(); // tf.buffer -> tf.tensor
     input_tensor = tf.reshape(input_tensor, [1, input_tensor.shape[0], input_tensor.shape[1], 1]); // [1, 128, 128, 1]
-        
+
     // Prediction!
     try {
         let predictions = tfmodel.predict(input_tensor);
@@ -166,8 +159,6 @@ function argMax(array) {
 // Crete drum set
 Max.addHandler("sample", (filepath) => {
 
-    Max.post(filepath);
-
     audio_utils.loadResampleAndMakeMono(filepath, MODEL_SR).then(buffer => {
         // Store globally
         buffer_ = buffer; 
@@ -176,7 +167,6 @@ Max.addHandler("sample", (filepath) => {
         var onsets = onset.getOnsets(buffer, MODEL_SR);   
         onsets_ = onsets; // store 
         Max.outlet("segments", onsets);
-
         return [onsets, buffer];
     }).then(([onsets, buffer]) => {
 
@@ -186,7 +176,6 @@ Max.addHandler("sample", (filepath) => {
             var start   = onsets[ i ];
             var end     = onsets[ i+1 ]
             var prediction = classifyAudioSegment(buffer, start, end);
-            Max.post(prediction);
             // For Hangarian Assignment Algorithm, We need a cost matrix
             var costs = [];
             for (var j=0; j < prediction.length; j++){

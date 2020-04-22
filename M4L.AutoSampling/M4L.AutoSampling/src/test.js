@@ -46,7 +46,7 @@ function classifyAudioSegment(buffer, startMS, endMS, sampleRate = MODEL_SR, fft
     let db_spectrogram = audio_utils.getMelspectrogramForClassification(buffer, startMS, endMS, sampleRate,
                                             fftSize, hopSize, melCount);
 
-    console.log("magenta--", db_spectrogram);
+    console.log("magenta--", db_spectrogram.length, db_spectrogram[0].length);
 
     // // Get spectrogram matrix
     // // db_spectrogram = classify.createSpectrogram(buffer, startMS, endMS, fftSize, hopSize, melCount, false);
@@ -103,7 +103,9 @@ function classifyAudioSegment(buffer, startMS, endMS, sampleRate = MODEL_SR, fft
 
 //     tfmodel.summary();
 
-audio_utils.loadResampleAndMakeMono("./audio/kick.wav", MODEL_SR).then(buffer => {
+
+
+audio_utils.loadResampleAndMakeMono("./audio/akaikick.wav", MODEL_SR).then(buffer => {
     // Store globally
     // buffer_ = buffer; 
 
@@ -111,7 +113,7 @@ audio_utils.loadResampleAndMakeMono("./audio/kick.wav", MODEL_SR).then(buffer =>
 
     // // Get onsets
     
-    var onsets = onset.getOnsets(buffer, MODEL_SR);   
+    // var onsets = onset.getOnsets(buffer, MODEL_SR);   
     // // onsets_ = onsets; // store 
     // Max.outlet("segments", onsets);
 
@@ -120,20 +122,34 @@ audio_utils.loadResampleAndMakeMono("./audio/kick.wav", MODEL_SR).then(buffer =>
     // console.log(onsets_);
    
     // classify each segment
-    var matrix = [];
-    for (var i = 0; i < onsets.length - 1; i++){
-        var start   = onsets[ i ];
-        var end     = onsets[ i+1 ]
-        var prediction = classifyAudioSegment(buffer, start, end);
+    var melspec = audio_utils.getMelspectrogramForClassification(buffer, 0, buffer.length/MODEL_SR * 1000.);
+    console.log(melspec.length, melspec[0].length);
+    
+    
+    var i, j, sub, total, count, avg;
 
-        console.log(prediction);
-        // // For Hangarian Assignment Algorithm, We need a cost matrix
-        // var costs = [];
-        // for (var j=0; j < prediction.length; j++){
-        //     costs.push(1.0 - prediction[j])
-        // }
-        // matrix.push(costs);
+    total = count = 0;
+    var maxval = -100;
+    for (i = 0; i < 128; ++i) {
+        sub = melspec[i];
+        count += sub.length;
+        for (j = 0; j < sub.length; ++j) {
+            total += sub[j];
+            if (sub[j] > maxval) maxval = sub[j];
+        }
     }
+    avg = count === 0 ? NaN : total / count;
+    console.log(avg, maxval)
+
+
+
+    //     // // For Hangarian Assignment Algorithm, We need a cost matrix
+    //     // var costs = [];
+    //     // for (var j=0; j < prediction.length; j++){
+    //     //     costs.push(1.0 - prediction[j])
+    //     // }
+    //     // matrix.push(costs);
+    // }
     
 
 }).catch(function (err) {

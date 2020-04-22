@@ -46,7 +46,8 @@ function getMelspectrogram(resampledMonoAudio, sampleRate, fftSize, hopSize, mel
     }));
   }
 
-function getMelspectrogramForClassification(resampledMonoAudio, startMs, endMs, sampleRate, fftSize, hopSize, melCount) {
+function getMelspectrogramForClassification(resampledMonoAudio, startMs, endMs, sampleRate=MODEL_SR, 
+                                        fftSize=MODEL_FFT_SIZE, hopSize=MODEL_HOP_SIZE, melCount=MODEL_MEL_NUM) {
     // Copy to temp array - to the length corresponding to the input melspectrogram
     var tempArray = new Float32Array(MODEL_INPUT_SAMPLES);
     var startOffset = Math.floor(startMs/1000. * sampleRate);

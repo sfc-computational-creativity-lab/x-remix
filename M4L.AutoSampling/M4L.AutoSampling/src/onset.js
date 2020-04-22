@@ -1,3 +1,4 @@
+// based on https://github.com/Keavon/Web-Onset/blob/master/Main.js
 
 const dsp = require('./dsp.js');
 
@@ -9,10 +10,8 @@ function getOnsets(bufferSamples, sampleRate, min_length = SEGMENT_MIN_LENGTH){
   const THRESHOLD_WINDOW_SIZE = 10;
   const MULTIPLIER            = 1.5; //1.5; TODO: find the best threshold
   const SAMPLE_SIZE           = 1024;
-  const FFT2SIZE              = 1024;
 
   var fft  = new dsp.FFT(SAMPLE_SIZE, sampleRate);
-  var fft2 = new dsp.FFT(FFT2SIZE,    sampleRate / SAMPLE_SIZE);
   var spectrum     = new Float32Array(SAMPLE_SIZE / 2);
   var prevSpectrum = new Float32Array(SAMPLE_SIZE / 2);
   var prunnedSpectralFlux = [];
