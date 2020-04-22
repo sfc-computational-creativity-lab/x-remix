@@ -5,7 +5,7 @@ const MODEL_HOP_SIZE        = 256;
 const MODEL_FFT_SIZE        = 1024
 const MODEL_SR             = 16000;
 
-const SEGMENT_MIN_LENGTH    = 150; // ms
+const SEGMENT_MIN_LENGTH    = 100; // ms
 
 exports.MODEL_MEL_LENGTH = MODEL_MEL_LENGTH;
 exports.MODEL_MEL_NUM = MODEL_MEL_NUM;
