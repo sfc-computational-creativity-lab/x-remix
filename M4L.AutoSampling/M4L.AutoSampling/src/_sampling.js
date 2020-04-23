@@ -15,6 +15,7 @@ const MODEL_HOP_SIZE = require('./constants.js').MODEL_HOP_SIZE;
 const MODEL_FFT_SIZE = require('./constants.js').MODEL_FFT_SIZE;
 const MODEL_MEL_LENGTH = require('./constants.js').MODEL_MEL_LENGTH;
 const MODEL_MEL_NUM = require('./constants.js').MODEL_MEL_NUM;
+const SEGMENT_MAX_NUM = require('./constants.js').SEGMENT_MAX_NUM;
 
 // keras-based model to classify drum kit sound based on its spectrogram.
 // python script: https://gist.github.com/naotokui/a2b331dd206b13a70800e862cfe7da3c
@@ -60,7 +61,7 @@ Max.addHandler("segments", (filepath) => {
         var onsets = onset.getOnsets(buffer_, MODEL_SR);   
         onsets_ = onsets; // store 
         Max.outlet("segments", onsets);
-        Max.post(onsets_);
+        Max.outlet("num_segments", onsets.length);
     }).catch(function (err) {
         Max.post(err);
     });
@@ -158,7 +159,6 @@ function argMax(array) {
 
 // Crete drum set
 Max.addHandler("sample", (filepath) => {
-
     audio_utils.loadResampleAndMakeMono(filepath, MODEL_SR).then(buffer => {
         // Store globally
         buffer_ = buffer; 
@@ -167,12 +167,19 @@ Max.addHandler("sample", (filepath) => {
         var onsets = onset.getOnsets(buffer, MODEL_SR);   
         onsets_ = onsets; // store 
         Max.outlet("segments", onsets);
+        Max.outlet("num_segments", onsets.length);
         return [onsets, buffer];
     }).then(([onsets, buffer]) => {
 
+        // Limit number of segments
+        if (onsets.length > SEGMENT_MAX_NUM) {
+            Max.post(`Too many segments. The object analyzes the first ${SEGMENT_MAX_NUM} segments`);
+        }
+        const onsets_num = Math.min(onsets.length-1, SEGMENT_MAX_NUM);
+
         // classify each segment
         var matrix = [];
-        for (var i = 0; i < onsets.length - 1; i++){
+        for (var i = 0; i < onsets_num; i++){
             var start   = onsets[ i ];
             var end     = onsets[ i+1 ]
             var prediction = classifyAudioSegment(buffer, start, end);
@@ -188,7 +195,7 @@ Max.addHandler("sample", (filepath) => {
         var assignments = [];
         for (var j = 0; j < DRUM_CLASSES.length; j++){
             var costs = [];
-            for (var i = 0; i < onsets.length - 1; i++){
+            for (var i = 0; i < onsets_num; i++){
                 costs.push(1.0 - matrix[i][j]);
             }
             var segmentid = costs.indexOf(Math.max(...costs));

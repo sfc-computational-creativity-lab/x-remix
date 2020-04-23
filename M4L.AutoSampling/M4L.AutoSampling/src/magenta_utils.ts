@@ -149,7 +149,7 @@ export function powerToDb(spec: Float32Array[], amin = 1e-8, topDb = 80.0) {
     for (let i = 0; i < width; i++) {
       // const maxVal = max(logSpec[i]);  // original code
       for (let j = 0; j < height; j++) {
-        logSpec[i][j] = Math.max(logSpec[i][j] - maxVal,  -topDb);
+        logSpec[i][j] = Math.max(logSpec[i][j] - maxVal,  -topDb);  // normalization
         // logSpec[i][j] = Math.max(logSpec[i][j], maxVal - topDb); // original code
       }
     }
