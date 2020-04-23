@@ -102,11 +102,16 @@ Max.addHandler("classify", (startMS, endMS) => {
     let predictions = tfmodel.predict(spec_tensors);
     predictions = predictions.flatten().dataSync(); // tf.tensor -> array
 
+
     // output    
-    for (var i=0; i < predictions.length; i++) Max.outlet("classify", i + 1, predictions[i]);
+    let preds = [];
+    for (var i=0; i < predictions.length; i++) {
+        preds[i] = predictions[i];  // how can I convert tensor data into normal array?
+        Max.outlet("classify", i + 1, predictions[i]);
+    }
 
     // find the class
-    let classId = argMax(predictions);
+    let classId = argMax(preds);
     Max.outlet("classified_class", DRUM_CLASSES[classId]);
 
     Max.outlet("end_process", 1);
