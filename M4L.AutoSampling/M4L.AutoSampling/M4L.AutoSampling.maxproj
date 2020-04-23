@@ -2,7 +2,7 @@
 	"name" : "M4L.AutoSampling",
 	"version" : 1,
 	"creationdate" : 3669374271,
-	"modificationdate" : 3670496529,
+	"modificationdate" : 3670514439,
 	"viewrect" : [ 25.0, 104.0, 300.0, 500.0 ],
 	"autoorganize" : 1,
 	"hideprojectwindow" : 0,
@@ -14,6 +14,16 @@
 				"kind" : "patcher",
 				"local" : 1,
 				"toplevel" : 1
+			}
+,
+			"buffer_display.maxpat" : 			{
+				"kind" : "patcher",
+				"local" : 1,
+				"singleton" : 				{
+					"bootpath" : "~/git/x-remix/M4L.AutoSampling/M4L.AutoSampling/patches",
+					"projectrelativepath" : "./patches"
+				}
+
 			}
 ,
 			"bufcopy.maxpat" : 			{
@@ -39,46 +49,6 @@
 		}
 ,
 		"code" : 		{
-			"autosample.js" : 			{
-				"kind" : "javascript",
-				"local" : 1,
-				"singleton" : 				{
-					"bootpath" : "~/git/x-remix/M4L.AutoSampling/M4L.AutoSampling/src",
-					"projectrelativepath" : "./src"
-				}
-
-			}
-,
-			"sampling.js" : 			{
-				"kind" : "javascript",
-				"local" : 1,
-				"singleton" : 				{
-					"bootpath" : "~/git/x-remix/M4L.AutoSampling/M4L.AutoSampling/src",
-					"projectrelativepath" : "./src"
-				}
-
-			}
-,
-			"dsp.js" : 			{
-				"kind" : "javascript",
-				"local" : 1,
-				"singleton" : 				{
-					"bootpath" : "~/git/x-remix/Node-for-Max-samples/AudioClassification_TFJS",
-					"projectrelativepath" : "../../Node-for-Max-samples/AudioClassification_TFJS"
-				}
-
-			}
-,
-			"onset.js" : 			{
-				"kind" : "javascript",
-				"local" : 1,
-				"singleton" : 				{
-					"bootpath" : "~/git/x-remix/Node-for-Max-samples/AudioClassification_TFJS",
-					"projectrelativepath" : "../../Node-for-Max-samples/AudioClassification_TFJS"
-				}
-
-			}
-,
 			"_sampling.js" : 			{
 				"kind" : "javascript",
 				"local" : 1,
@@ -89,17 +59,7 @@
 
 			}
 ,
-			"audio_classification.js" : 			{
-				"kind" : "javascript",
-				"local" : 1,
-				"singleton" : 				{
-					"bootpath" : "~/git/x-remix/M4L.AutoSampling/M4L.AutoSampling/src",
-					"projectrelativepath" : "./src"
-				}
-
-			}
-,
-			"audio_utils.js" : 			{
+			"onset.js" : 			{
 				"kind" : "javascript",
 				"local" : 1,
 				"singleton" : 				{
@@ -119,7 +79,7 @@
 
 			}
 ,
-			"logging.js" : 			{
+			"audio_utils.js" : 			{
 				"kind" : "javascript",
 				"local" : 1,
 				"singleton" : 				{
@@ -130,6 +90,36 @@
 			}
 ,
 			"magenta_utils.js" : 			{
+				"kind" : "javascript",
+				"local" : 1,
+				"singleton" : 				{
+					"bootpath" : "~/git/x-remix/M4L.AutoSampling/M4L.AutoSampling/src",
+					"projectrelativepath" : "./src"
+				}
+
+			}
+,
+			"test.js" : 			{
+				"kind" : "javascript",
+				"local" : 1,
+				"singleton" : 				{
+					"bootpath" : "~/git/x-remix/M4L.AutoSampling/M4L.AutoSampling/src",
+					"projectrelativepath" : "./src"
+				}
+
+			}
+,
+			"audio_classification.js" : 			{
+				"kind" : "javascript",
+				"local" : 1,
+				"singleton" : 				{
+					"bootpath" : "~/git/x-remix/M4L.AutoSampling/M4L.AutoSampling/src",
+					"projectrelativepath" : "./src"
+				}
+
+			}
+,
+			"dsp.js" : 			{
 				"kind" : "javascript",
 				"local" : 1,
 				"singleton" : 				{

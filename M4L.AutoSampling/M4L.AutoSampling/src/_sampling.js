@@ -47,6 +47,7 @@ const DRUM_CLASSES = [
 // Global Variables
 var buffer_;
 var onsets_;
+var onset_threshold_ = 1.5;
 
 // This will be printed directly to the Max console
 Max.post(`Loaded the ${path.basename(__filename)} script`);
@@ -58,14 +59,23 @@ Max.addHandler("segments", (filepath) => {
         buffer_ = buffer; 
 
         // Get onsets
-        var onsets = onset.getOnsets(buffer_, MODEL_SR);   
+        var onsets = onset.getOnsets(buffer_, MODEL_SR, multiplier=onset_threshold_);   
         onsets_ = onsets; // store 
+
         Max.outlet("segments", onsets);
         Max.outlet("num_segments", onsets.length);
+        Max.post("onsets:", onsets.length);
     }).catch(function (err) {
         Max.post(err);
     });
 });
+
+// Segmentation threshold
+Max.addHandler("segments_thresh", (threshold) => {
+    onset_threshold_ = threshold;
+    Max.post(`segmentation threshold: ${onset_threshold_}`);
+});
+
 
 // Find a segment containing the given position
 Max.addHandler("find_segment", (position) => {
@@ -84,88 +94,61 @@ Max.addHandler("find_segment", (position) => {
 
 // Classification
 Max.addHandler("classify", (startMS, endMS) => {
-    // classify segmennt
-    let prediction = classifyAudioSegment(buffer_, startMS, endMS);
-    Max.outlet("classify", prediction);
+    console.assert(buffer_ != null && onsets_.length > 0);
 
-    let classId = argMax(prediction);
+    // classify segmennt
+    let spec = getSpectrogramInTensor(buffer_, startMS, endMS);
+    let spec_tensors = tf.stack([spec]);
+    let predictions = tfmodel.predict(spec_tensors);
+    predictions = predictions.flatten().dataSync(); // tf.tensor -> array
+
+    // output    
+    for (var i=0; i < predictions.length; i++) Max.outlet("classify", i + 1, predictions[i]);
+
+    // find the class
+    let classId = argMax(predictions);
     Max.outlet("classified_class", DRUM_CLASSES[classId]);
+
+    Max.outlet("end_process", 1);
 });
 
-// Classification with TensorFlow
-function classifyAudioSegment(buffer, startMS, endMS, sampleRate = MODEL_SR, fftSize = MODEL_FFT_SIZE, 
-                    hopSize = MODEL_HOP_SIZE, melCount = MODEL_MEL_NUM, specLength = MODEL_MEL_LENGTH) {
-    if (typeof isModelLoaded === "undefined" || !isModelLoaded) {
-        Max.post("Error: TF Model is not loaded.");
-        return;
-    }
-
-    // for (var i=0; i <buffer.length; i++) buffer[i] = 0.0;
-    let db_spectrogram = audio_utils.getMelspectrogramForClassification(buffer, startMS, endMS, sampleRate,
-                                                         fftSize, hopSize, melCount);
-
-    // Get spectrogram matrix
-    // db_spectrogram = classify.createSpectrogram(buffer, startMS, endMS, fftSize, hopSize, melCount, false);
-
-    // Max.post(db_spectrogram.length);
-    // for (var i=0; i <1; i++) {
-    //     for (var j=0; j<128; j++){
-    //         Max.post(i, j, db_spectrogram[i][j]);
-    //     }
-    // }
-
-    // Create tf.tensor2d
-    // This audio classification model expects spectrograms of [128, 128]  (# of melbanks: 128 / duration: 128 FFT windows) 
-    const tfbuffer = tf.buffer([melCount, specLength]);
-
-    // Initialize the tfbuffer.  TODO: better initialization??
-    for (var i = 0; i < melCount; i++) {
-        for (var j = 0; j < specLength; j++) {
-            tfbuffer.set(classify.MIN_DB, i, j);
-        }
-    }
-
-    // Fill the tfbuffer with spectrogram data in dB
-    let lng = (db_spectrogram.length < specLength) ? db_spectrogram.length : specLength; // just in case the buffer is shorter than the specified size
-    for (var i = 0; i < melCount; i++) {
-        for (var j = 0; j < lng; j++) {
-            tfbuffer.set(db_spectrogram[j][i], i, j); // cantion: needs to transpose the matrix
-        }
-    }
-
-    // Reshape for prediction
-    input_tensor = tfbuffer.toTensor(); // tf.buffer -> tf.tensor
-    input_tensor = tf.reshape(input_tensor, [1, input_tensor.shape[0], input_tensor.shape[1], 1]); // [1, 128, 128, 1]
-
-    // Prediction!
-    try {
-        let predictions = tfmodel.predict(input_tensor);
-        predictions = predictions.flatten().dataSync(); // tf.tensor -> array
-        let predictions_ = [] // we only care the selected set of drums
-        for (var i = 0; i < DRUM_CLASSES.length; i++) {
-            predictions_.push(predictions[i]);
-        }
-        return predictions_;
-    } catch (err) {
-        Max.post(err);
-        console.error(err);
-    }
-}
 
 // Utilities
 function argMax(array) {
     return array.map((x, i) => [x, i]).reduce((r, a) => (a[0] > r[0] ? a : r))[1];
 }
 
-// Crete drum set
-Max.addHandler("sample", (filepath) => {
+// Get spectrogram in tf.tensor
+function getSpectrogramInTensor(buffer, startMS, endMS, sampleRate = MODEL_SR, fftSize = MODEL_FFT_SIZE, 
+    hopSize = MODEL_HOP_SIZE, melCount = MODEL_MEL_NUM, specLength = MODEL_MEL_LENGTH){
+
+    let dbspec = audio_utils.getMelspectrogramForClassification(buffer, startMS, endMS, sampleRate,
+        fftSize, hopSize, melCount);
+    console.assert(dbspec.length >= specLength, "invalid spec size");
+
+    // Fill the tfbuffer with spectrogram data in dB
+    const tfbuffer = tf.buffer([melCount, specLength]);
+    for (var i = 0; i < melCount; i++) {
+        for (var j = 0; j < specLength; j++) {
+            tfbuffer.set(dbspec[j][i], i, j); // cantion: needs to transpose the matrix
+        }
+    }
+    
+    // Buffer to Tensor
+    tensor_spec = tfbuffer.toTensor(); // tf.buffer -> tf.tensor
+    tensor_spec = tf.reshape(tensor_spec, [tensor_spec.shape[0], tensor_spec.shape[1], 1]); // [1, 128, 128, 1]
+    return tensor_spec;
+}
+
+async function doesSample(filepath){
     audio_utils.loadResampleAndMakeMono(filepath, MODEL_SR).then(buffer => {
         // Store globally
         buffer_ = buffer; 
 
         // Get onsets
-        var onsets = onset.getOnsets(buffer, MODEL_SR);   
+        var onsets = onset.getOnsets(buffer, MODEL_SR, multiplier=onset_threshold_);   
         onsets_ = onsets; // store 
+
         Max.outlet("segments", onsets);
         Max.outlet("num_segments", onsets.length);
         return [onsets, buffer];
@@ -177,47 +160,38 @@ Max.addHandler("sample", (filepath) => {
         }
         const onsets_num = Math.min(onsets.length-1, SEGMENT_MAX_NUM);
 
-        // classify each segment
-        var matrix = [];
+        // create 
+        var spec_tensors = []
         for (var i = 0; i < onsets_num; i++){
             var start   = onsets[ i ];
             var end     = onsets[ i+1 ]
-            var prediction = classifyAudioSegment(buffer, start, end);
+            let spec = getSpectrogramInTensor(buffer, start, end);
+            spec_tensors.push(spec);
+        }
+
+        // Prediction!
+        spec_tensors = tf.stack(spec_tensors);
+        let predictions = tfmodel.predict(spec_tensors);
+        predictions = predictions.dataSync(); // tf.tensor -> array
+
+        // Assign
+        var matrix = [];
+        for (var i = 0; i < onsets_num; i++){
             // For Hangarian Assignment Algorithm, We need a cost matrix
             var costs = [];
-            for (var j=0; j < prediction.length; j++){
-                costs.push(1.0 - prediction[j])
+            for (var j=0; j < DRUM_CLASSES.length; j++){
+                costs.push(1.0 - predictions[i * DRUM_CLASSES.length + j]);
             }
             matrix.push(costs);
         }
 
-        // simple assignment
-        var assignments = [];
-        for (var j = 0; j < DRUM_CLASSES.length; j++){
-            var costs = [];
-            for (var i = 0; i < onsets_num; i++){
-                costs.push(1.0 - matrix[i][j]);
-            }
-            var segmentid = costs.indexOf(Math.max(...costs));
-            assignments.push([segmentid, j]);
-        }
-
-        Max.post(assignments);
-        // Max.post(matrix);
-
-        // linear assignment problem
+        // // linear assignment problem
         var assignments = munkres(matrix);
         Max.post(assignments);
-
         return [onsets, assignments];
     })
     // output
     .then(([onsets, assignments]) => {
-        // sort
-        // assignments.sort(function(a, b) {
-        //     return a[1] - b[1];
-        // });
-
         // output
         for (var i = 0; i < assignments.length; i++){
             var assign      = assignments[i];
@@ -225,14 +199,17 @@ Max.addHandler("sample", (filepath) => {
             var segmentid   = assign[0];
             Max.outlet("sample", drumid + 1, onsets[segmentid], onsets[segmentid + 1], segmentid);
         }
+        Max.outlet("end_process", 1);
     })
     // error handling
     .catch(function (err) {
         Max.post(err);
     });
+}
+exports.doesSample = doesSample;
 
-    // Assignments
-    // var assignments = munkres(matrix);
-    // Max.post(assignments);
-    // Max.outlet("classify", prediction);
+// Crete drum set
+Max.addHandler("sample", (filepath) => {
+    Max.outlet("start_process", 1);
+    doesSample(filepath);
 });

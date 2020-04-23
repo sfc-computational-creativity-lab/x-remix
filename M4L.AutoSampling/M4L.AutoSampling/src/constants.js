@@ -6,7 +6,7 @@ const MODEL_FFT_SIZE        = 1024
 const MODEL_SR             = 16000;
 
 const SEGMENT_MIN_LENGTH    = 100; // ms
-const SEGMENT_MAX_NUM      = 15;
+const SEGMENT_MAX_NUM      = 10;
 
 exports.MODEL_MEL_LENGTH = MODEL_MEL_LENGTH;
 exports.MODEL_MEL_NUM = MODEL_MEL_NUM;

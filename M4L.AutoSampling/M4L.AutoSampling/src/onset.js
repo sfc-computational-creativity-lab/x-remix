@@ -1,15 +1,18 @@
 // based on https://github.com/Keavon/Web-Onset/blob/master/Main.js
 
 const dsp = require('./dsp.js');
+// const Max = require('max-api');
 
 const SEGMENT_MIN_LENGTH = require('./constants.js').SEGMENT_MIN_LENGTH; // Minimum length of an audio segment
 
 // Get onsets based on changes in spectrum flux
-function getOnsets(bufferSamples, sampleRate, min_length = SEGMENT_MIN_LENGTH){
+function getOnsets(bufferSamples, sampleRate, multiplier=1.5, min_length = SEGMENT_MIN_LENGTH){
 
-  const THRESHOLD_WINDOW_SIZE = 10;
-  const MULTIPLIER            = 1.5; //1.5; TODO: find the best threshold
+  const THRESHOLD_WINDOW_SIZE = 5;
   const SAMPLE_SIZE           = 1024;
+
+  // Max.post(`segmentaion - window size: ${THRESHOLD_WINDOW_SIZE}`);
+  // Max.post(`segmentaion - multiplier: ${multiplier}`);
 
   var fft  = new dsp.FFT(SAMPLE_SIZE, sampleRate);
   var spectrum     = new Float32Array(SAMPLE_SIZE / 2);
@@ -69,7 +72,7 @@ function getOnsets(bufferSamples, sampleRate, min_length = SEGMENT_MIN_LENGTH){
     }
 
     // Save the calculated threshold value for this averaging window range
-    threshold.push(sum / (end - start) * MULTIPLIER);
+    threshold.push(sum / (end - start) * multiplier);
   }
 
   // Calculate pruned flux values where the spectral flux exceeds the averaged threshold
