@@ -8,14 +8,17 @@ from spleeter.separator import Separator
 import threading, time
 
 ip = "127.0.0.1"
-server_port = 8888
-max_port = 12000
+server_port = 8889
+max_port = 12002
 
 # クライアントを作る
 client = SimpleUDPClient(ip, max_port)
 
 # root folder
 stems_folder = "/tmp/stems"
+
+# ターゲットのファイルパス
+target_path = None
 
 # 生存確認 - ひたすら定期的にメッセージを送る
 def send_heartbeat():
@@ -42,13 +45,21 @@ def send_osc(message):
 
 
 def path_handler(unused_addr, filepath):
+    global target_path
     """ 値を受信したときに行う処理 """
     print(f"recieved path: {filepath}")
+    target_path = filepath
+
+def start_handler(unused_addr, value):
+    if target_path is None:
+        print("set filepath before processing")
+        return
+    
     client.send_message("/processing", 1)
 
     stems_path_array = []
     # if __name__ == "__main__":
-    stems_path_array = stem_separation(filepath)
+    stems_path_array = stem_separation(target_path)
     print("separation Finished")
 
     send_osc(stems_path_array)
@@ -59,6 +70,7 @@ def path_handler(unused_addr, filepath):
 # URLにコールバック関数を割り当てる
 dispatcher = Dispatcher()
 dispatcher.map("/path", path_handler)
+dispatcher.map("/start", start_handler)
 
 # サーバを起動する
 server = osc_server.ThreadingOSCUDPServer((ip, server_port), dispatcher)

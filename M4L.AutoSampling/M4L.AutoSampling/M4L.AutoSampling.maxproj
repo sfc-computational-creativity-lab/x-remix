@@ -2,7 +2,7 @@
 	"name" : "M4L.AutoSampling",
 	"version" : 1,
 	"creationdate" : 3669374271,
-	"modificationdate" : 3670518854,
+	"modificationdate" : 3670582745,
 	"viewrect" : [ 25.0, 104.0, 300.0, 500.0 ],
 	"autoorganize" : 1,
 	"hideprojectwindow" : 0,
@@ -16,34 +16,24 @@
 				"toplevel" : 1
 			}
 ,
-			"buffer_display.maxpat" : 			{
+			"_buffer_view.maxpat" : 			{
 				"kind" : "patcher",
-				"local" : 1,
-				"singleton" : 				{
-					"bootpath" : "~/git/x-remix/M4L.AutoSampling/M4L.AutoSampling/patches",
-					"projectrelativepath" : "./patches"
-				}
-
+				"local" : 1
 			}
 ,
 			"bufcopy.maxpat" : 			{
 				"kind" : "patcher",
-				"local" : 1,
-				"singleton" : 				{
-					"bootpath" : "~/git/x-remix/M4L.AutoSampling/M4L.AutoSampling/patches",
-					"projectrelativepath" : "./patches"
-				}
-
+				"local" : 1
 			}
 ,
 			"bufplay.maxpat" : 			{
 				"kind" : "patcher",
-				"local" : 1,
-				"singleton" : 				{
-					"bootpath" : "~/git/x-remix/M4L.AutoSampling/M4L.AutoSampling/patches",
-					"projectrelativepath" : "./patches"
-				}
-
+				"local" : 1
+			}
+,
+			"buffer_display.maxpat" : 			{
+				"kind" : "patcher",
+				"local" : 1
 			}
 
 		}
@@ -51,12 +41,7 @@
 		"code" : 		{
 			"_sampling.js" : 			{
 				"kind" : "javascript",
-				"local" : 1,
-				"singleton" : 				{
-					"bootpath" : "~/git/x-remix/M4L.AutoSampling/M4L.AutoSampling/src",
-					"projectrelativepath" : "./src"
-				}
-
+				"local" : 1
 			}
 ,
 			"onset.js" : 			{
@@ -161,8 +146,8 @@
 		}
 ,
 		"1" : 		{
-			"bootpath" : "~/git/x-remix/M4L.AutoSampling/M4L.AutoSampling/node_modules",
-			"projectrelativepath" : "./node_modules",
+			"bootpath" : "/",
+			"projectrelativepath" : "../../../../../..",
 			"label" : "node modules",
 			"recursive" : 1,
 			"enabled" : 1,
@@ -170,8 +155,8 @@
 		}
 ,
 		"2" : 		{
-			"bootpath" : "~/git/x-remix/M4L.AutoSampling/M4L.AutoSampling/maxpatch",
-			"projectrelativepath" : "./maxpatch",
+			"bootpath" : "/",
+			"projectrelativepath" : "../../../../../..",
 			"label" : "subpatch",
 			"recursive" : 1,
 			"enabled" : 1,
@@ -181,7 +166,7 @@
 	}
 ,
 	"detailsvisible" : 0,
-	"amxdtype" : 1768515945,
+	"amxdtype" : 1633771873,
 	"readonly" : 0,
 	"devpathtype" : 0,
 	"devpath" : ".",
