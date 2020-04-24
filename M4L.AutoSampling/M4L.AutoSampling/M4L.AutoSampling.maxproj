@@ -2,7 +2,7 @@
 	"name" : "M4L.AutoSampling",
 	"version" : 1,
 	"creationdate" : 3669374271,
-	"modificationdate" : 3670597054,
+	"modificationdate" : 3670518854,
 	"viewrect" : [ 25.0, 104.0, 300.0, 500.0 ],
 	"autoorganize" : 1,
 	"hideprojectwindow" : 0,
@@ -16,21 +16,11 @@
 				"toplevel" : 1
 			}
 ,
-			"buffer_view.maxpat" : 			{
-				"kind" : "patcher",
-				"local" : 1,
-				"singleton" : 				{
-					"bootpath" : "~/Documents/GitHub/x-remix/M4L.AutoSampling/M4L.AutoSampling/patches",
-					"projectrelativepath" : "./patches"
-				}
-
-			}
-,
 			"buffer_display.maxpat" : 			{
 				"kind" : "patcher",
 				"local" : 1,
 				"singleton" : 				{
-					"bootpath" : "~/Documents/GitHub/x-remix/M4L.AutoSampling/M4L.AutoSampling/patches",
+					"bootpath" : "~/git/x-remix/M4L.AutoSampling/M4L.AutoSampling/patches",
 					"projectrelativepath" : "./patches"
 				}
 
@@ -40,7 +30,7 @@
 				"kind" : "patcher",
 				"local" : 1,
 				"singleton" : 				{
-					"bootpath" : "~/Documents/GitHub/x-remix/M4L.AutoSampling/M4L.AutoSampling/patches",
+					"bootpath" : "~/git/x-remix/M4L.AutoSampling/M4L.AutoSampling/patches",
 					"projectrelativepath" : "./patches"
 				}
 
@@ -50,7 +40,7 @@
 				"kind" : "patcher",
 				"local" : 1,
 				"singleton" : 				{
-					"bootpath" : "~/Documents/GitHub/x-remix/M4L.AutoSampling/M4L.AutoSampling/patches",
+					"bootpath" : "~/git/x-remix/M4L.AutoSampling/M4L.AutoSampling/patches",
 					"projectrelativepath" : "./patches"
 				}
 
@@ -63,7 +53,7 @@
 				"kind" : "javascript",
 				"local" : 1,
 				"singleton" : 				{
-					"bootpath" : "~/Documents/GitHub/x-remix/M4L.AutoSampling/M4L.AutoSampling/src",
+					"bootpath" : "~/git/x-remix/M4L.AutoSampling/M4L.AutoSampling/src",
 					"projectrelativepath" : "./src"
 				}
 
@@ -73,7 +63,7 @@
 				"kind" : "javascript",
 				"local" : 1,
 				"singleton" : 				{
-					"bootpath" : "~/Documents/GitHub/x-remix/M4L.AutoSampling/M4L.AutoSampling/src",
+					"bootpath" : "~/git/x-remix/M4L.AutoSampling/M4L.AutoSampling/src",
 					"projectrelativepath" : "./src"
 				}
 
@@ -83,7 +73,7 @@
 				"kind" : "javascript",
 				"local" : 1,
 				"singleton" : 				{
-					"bootpath" : "~/Documents/GitHub/x-remix/M4L.AutoSampling/M4L.AutoSampling/src",
+					"bootpath" : "~/git/x-remix/M4L.AutoSampling/M4L.AutoSampling/src",
 					"projectrelativepath" : "./src"
 				}
 
@@ -93,7 +83,7 @@
 				"kind" : "javascript",
 				"local" : 1,
 				"singleton" : 				{
-					"bootpath" : "~/Documents/GitHub/x-remix/M4L.AutoSampling/M4L.AutoSampling/src",
+					"bootpath" : "~/git/x-remix/M4L.AutoSampling/M4L.AutoSampling/src",
 					"projectrelativepath" : "./src"
 				}
 
@@ -103,7 +93,7 @@
 				"kind" : "javascript",
 				"local" : 1,
 				"singleton" : 				{
-					"bootpath" : "~/Documents/GitHub/x-remix/M4L.AutoSampling/M4L.AutoSampling/src",
+					"bootpath" : "~/git/x-remix/M4L.AutoSampling/M4L.AutoSampling/src",
 					"projectrelativepath" : "./src"
 				}
 
@@ -113,7 +103,7 @@
 				"kind" : "javascript",
 				"local" : 1,
 				"singleton" : 				{
-					"bootpath" : "~/Documents/GitHub/x-remix/M4L.AutoSampling/M4L.AutoSampling/src",
+					"bootpath" : "~/git/x-remix/M4L.AutoSampling/M4L.AutoSampling/src",
 					"projectrelativepath" : "./src"
 				}
 
@@ -123,7 +113,7 @@
 				"kind" : "javascript",
 				"local" : 1,
 				"singleton" : 				{
-					"bootpath" : "~/Documents/GitHub/x-remix/M4L.AutoSampling/M4L.AutoSampling/src",
+					"bootpath" : "~/git/x-remix/M4L.AutoSampling/M4L.AutoSampling/src",
 					"projectrelativepath" : "./src"
 				}
 
@@ -133,7 +123,7 @@
 				"kind" : "javascript",
 				"local" : 1,
 				"singleton" : 				{
-					"bootpath" : "~/Documents/GitHub/x-remix/M4L.AutoSampling/M4L.AutoSampling/src",
+					"bootpath" : "~/git/x-remix/M4L.AutoSampling/M4L.AutoSampling/src",
 					"projectrelativepath" : "./src"
 				}
 
@@ -146,7 +136,7 @@
 				"kind" : "json",
 				"local" : 1,
 				"singleton" : 				{
-					"bootpath" : "~/Documents/GitHub/x-remix/Node-for-Max-samples/AudioClassification_TFJS",
+					"bootpath" : "~/git/x-remix/Node-for-Max-samples/AudioClassification_TFJS",
 					"projectrelativepath" : "../../Node-for-Max-samples/AudioClassification_TFJS"
 				}
 
@@ -162,7 +152,7 @@
 ,
 	"searchpath" : 	{
 		"0" : 		{
-			"bootpath" : "~/Documents/GitHub/x-remix/M4L.AutoSampling/M4L.AutoSampling/src",
+			"bootpath" : "~/git/x-remix/M4L.AutoSampling/M4L.AutoSampling/src",
 			"projectrelativepath" : "./src",
 			"label" : "src",
 			"recursive" : 1,
@@ -171,7 +161,7 @@
 		}
 ,
 		"1" : 		{
-			"bootpath" : "~/Documents/GitHub/x-remix/M4L.AutoSampling/M4L.AutoSampling/node_modules",
+			"bootpath" : "~/git/x-remix/M4L.AutoSampling/M4L.AutoSampling/node_modules",
 			"projectrelativepath" : "./node_modules",
 			"label" : "node modules",
 			"recursive" : 1,
@@ -180,8 +170,8 @@
 		}
 ,
 		"2" : 		{
-			"bootpath" : "/",
-			"projectrelativepath" : "../../../../../../..",
+			"bootpath" : "~/git/x-remix/M4L.AutoSampling/M4L.AutoSampling/maxpatch",
+			"projectrelativepath" : "./maxpatch",
 			"label" : "subpatch",
 			"recursive" : 1,
 			"enabled" : 1,
@@ -191,7 +181,7 @@
 	}
 ,
 	"detailsvisible" : 0,
-	"amxdtype" : 1633771873,
+	"amxdtype" : 1768515945,
 	"readonly" : 0,
 	"devpathtype" : 0,
 	"devpath" : ".",
