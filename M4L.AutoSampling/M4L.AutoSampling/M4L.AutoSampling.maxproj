@@ -2,7 +2,7 @@
 	"name" : "M4L.AutoSampling",
 	"version" : 1,
 	"creationdate" : 3669374271,
-	"modificationdate" : 3670518854,
+	"modificationdate" : 3670604065,
 	"viewrect" : [ 25.0, 104.0, 300.0, 500.0 ],
 	"autoorganize" : 1,
 	"hideprojectwindow" : 0,
@@ -16,34 +16,19 @@
 				"toplevel" : 1
 			}
 ,
-			"buffer_display.maxpat" : 			{
-				"kind" : "patcher",
-				"local" : 1,
-				"singleton" : 				{
-					"bootpath" : "~/git/x-remix/M4L.AutoSampling/M4L.AutoSampling/patches",
-					"projectrelativepath" : "./patches"
-				}
-
-			}
-,
 			"bufcopy.maxpat" : 			{
 				"kind" : "patcher",
-				"local" : 1,
-				"singleton" : 				{
-					"bootpath" : "~/git/x-remix/M4L.AutoSampling/M4L.AutoSampling/patches",
-					"projectrelativepath" : "./patches"
-				}
-
+				"local" : 1
 			}
 ,
 			"bufplay.maxpat" : 			{
 				"kind" : "patcher",
-				"local" : 1,
-				"singleton" : 				{
-					"bootpath" : "~/git/x-remix/M4L.AutoSampling/M4L.AutoSampling/patches",
-					"projectrelativepath" : "./patches"
-				}
-
+				"local" : 1
+			}
+,
+			"buffer_display.maxpat" : 			{
+				"kind" : "patcher",
+				"local" : 1
 			}
 
 		}
@@ -51,12 +36,7 @@
 		"code" : 		{
 			"_sampling.js" : 			{
 				"kind" : "javascript",
-				"local" : 1,
-				"singleton" : 				{
-					"bootpath" : "~/git/x-remix/M4L.AutoSampling/M4L.AutoSampling/src",
-					"projectrelativepath" : "./src"
-				}
-
+				"local" : 1
 			}
 ,
 			"onset.js" : 			{
@@ -161,18 +141,9 @@
 		}
 ,
 		"1" : 		{
-			"bootpath" : "~/git/x-remix/M4L.AutoSampling/M4L.AutoSampling/node_modules",
-			"projectrelativepath" : "./node_modules",
-			"label" : "node modules",
-			"recursive" : 1,
-			"enabled" : 1,
-			"includeincollective" : 1
-		}
-,
-		"2" : 		{
-			"bootpath" : "~/git/x-remix/M4L.AutoSampling/M4L.AutoSampling/maxpatch",
-			"projectrelativepath" : "./maxpatch",
-			"label" : "subpatch",
+			"bootpath" : "~/git/x-remix/M4L.AutoSampling/M4L.AutoSampling/patches",
+			"projectrelativepath" : "./patches",
+			"label" : "",
 			"recursive" : 1,
 			"enabled" : 1,
 			"includeincollective" : 1

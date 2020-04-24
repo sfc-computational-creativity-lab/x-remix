@@ -8,8 +8,8 @@ from spleeter.separator import Separator
 import threading, time
 
 ip = "127.0.0.1"
-server_port = 8888
-max_port = 12000
+server_port = 8889
+max_port = 12002
 
 # クライアントを作る
 client = SimpleUDPClient(ip, max_port)
@@ -29,10 +29,11 @@ th = threading.Thread(target=send_heartbeat)
 th.start()
 
 
-def stem_separation(file_path):
+def stem_separation(file_path):    
+    folder_name = os.path.splitext(os.path.basename(file_path))[0]
+    print(folder_name)
     separator = Separator("spleeter:4stems")
     separator.separate_to_file(file_path, stems_folder)
-    folder_name = os.path.splitext(os.path.basename(file_path))[0]
     bass_path = stems_folder + "/" + folder_name + "/bass.wav"
     drums_path = stems_folder + "/" + folder_name + "/drums.wav"
     other_path = stems_folder + "/" + folder_name + "/other.wav"
