@@ -8,8 +8,8 @@ from spleeter.separator import Separator
 import threading, time
 
 ip = "127.0.0.1"
-server_port = 8889
-max_port = 12002
+server_port = 8888
+max_port = 12000
 
 # クライアントを作る
 client = SimpleUDPClient(ip, max_port)
