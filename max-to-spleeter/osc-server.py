@@ -1,15 +1,29 @@
+
+
 import os
 from pythonosc import osc_server
 from pythonosc.dispatcher import Dispatcher
 from pythonosc.udp_client import SimpleUDPClient
 from spleeter.separator import Separator
-
+import threading, time
 
 ip = "127.0.0.1"
 server_port = 8888
 max_port = 12000
 
-stems_folder = "/Users/ryohasegawa/Documents/CC-Lab/x-remix/spleeter/stems"
+# クライアントを作る
+client = SimpleUDPClient(ip, max_port)
+
+# root folder
+stems_folder = "/tmp/stems"
+
+# 生存確認 - ひたすら定期的にメッセージを送る
+def send_heartbeat():
+    while True:
+        client.send_message("/ping", 1)
+        time.sleep(2)
+th = threading.Thread(target=send_heartbeat)
+th.start()
 
 
 def stem_separation(file_path):
@@ -24,21 +38,21 @@ def stem_separation(file_path):
 
 
 def send_osc(message):
-    client = SimpleUDPClient(ip, max_port)
     client.send_message("/stems", message)
 
 
-def path_handler(unused_addr, message):
+def path_handler(unused_addr, filepath):
     """ 値を受信したときに行う処理 """
-    path = message.strip("Macintosh HD:")
-    print(f"recieved path: {path}")
+    print(f"recieved path: {filepath}")
+    client.send_message("/processing", 1)
 
     stems_path_array = []
     # if __name__ == "__main__":
-    stems_path_array = stem_separation(path)
+    stems_path_array = stem_separation(filepath)
     print("separation Finished")
 
     send_osc(stems_path_array)
+    client.send_message("/processing", 0)
     print("Sent")
 
 
@@ -50,3 +64,4 @@ dispatcher.map("/path", path_handler)
 server = osc_server.ThreadingOSCUDPServer((ip, server_port), dispatcher)
 print(f"Listening on {server.server_address}")
 server.serve_forever()
+
